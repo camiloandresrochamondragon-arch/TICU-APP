@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Universo TIC</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script>
+    function mostrarSeccion(id) {
+      const secciones = document.querySelectorAll('.seccion-tic');
+      secciones.forEach(sec => sec.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+    }
+  </script>
+</head>
+<body class="fondo-lila">
+
+  <header class="fondo-azul">
+    <h1>🌍 Bienvenido al Universo TIC</h1>
+    <p class="intro">Elige lo que quieres explorar sobre las TIC:</p>
+    <div class="mascota-container">
+      <img src="/static/img/tic-gif.gif" alt="GIF TIC" class="mascota">
+      <p class="mascota-texto">¡Las TIC están en todas partes! 💻📱🌐</p>
+    </div>
+  </header>
+
+  <!-- Cuadros de selección -->
+  <section class="fondo-violeta">
+    <h2 class="subtitulo">🧠 ¿Qué quieres explorar?</h2>
+    <div class="grid-accesos">
+      <button class="acceso-cuadro" onclick="mostrarSeccion('tic-definicion')">📚 ¿Qué son las TIC?</button>
+      <button class="acceso-cuadro" onclick="mostrarSeccion('tic-usos')">🎯 ¿Para qué se usan?</button>
+      <button class="acceso-cuadro" onclick="mostrarSeccion('tic-contenido')">🧭 ¿Qué encontrarás aquí?</button>
+      <button class="acceso-cuadro" onclick="mostrarSeccion('tic-funciona')">🔍 ¿Cómo funciona?</button>
+      <button class="acceso-cuadro" onclick="mostrarSeccion('tic-sabias')">💡 ¿Sabías que...?</button>
+    </div>
+  </section>
+
+  <!-- Secciones ocultas -->
+  <main>
+    <section id="tic-definicion" class="fondo-blanco seccion-tic" style="display:none;">
+      <h2>📚 ¿Qué son las TIC?</h2>
+      <p>Las Tecnologías de la Información y la Comunicación (TIC) son herramientas que usamos para comunicarnos, aprender, crear y compartir. Incluyen computadoras, internet, celulares, aplicaciones y más.</p>
+    </section>
+
+    <section id="tic-usos" class="fondo-verde seccion-tic" style="display:none;">
+      <h2>🎯 ¿Para qué se usan las TIC?</h2>
+      <ul>
+        <li>Para aprender cosas nuevas 📖</li>
+        <li>Para jugar y divertirse 🎮</li>
+        <li>Para comunicarse con otros 💬</li>
+        <li>Para crear historias, dibujos y sonidos 🎨🎵</li>
+      </ul>
+    </section>
+
+    <section id="tic-contenido" class="fondo-amarillo seccion-tic" style="display:none;">
+      <h2>🧭 ¿Qué encontrarás en esta página?</h2>
+      <p>Explorarás mundos temáticos como Programación, Multimedia e Internet Seguro. Cada mundo tiene actividades, retos y medallas que puedes ganar.</p>
+    </section>
+
+    <section id="tic-funciona" class="fondo-celeste seccion-tic" style="display:none;">
+      <h2>🔍 ¿Cómo funciona?</h2>
+      <ol>
+        <li>Elige un mundo TIC desde los cuadros de colores.</li>
+        <li>Lee, juega y participa en actividades.</li>
+        <li>Gana medallas y desbloquea logros.</li>
+        <li>Comparte tus ideas en la Sala de Retos TIC.</li>
+      </ol>
+    </section>
+
+    <section id="tic-sabias" class="fondo-naranja seccion-tic" style="display:none;">
+      <h2>💡 ¿Sabías que...?</h2>
+      <p>¡Cada vez que aprendes algo nuevo en TICU, desbloqueas una parte de tu potencial digital! 🌟</p>
+    </section>
+  </main>
+
+  <footer class="fondo-verde">
+    <p>&copy; 2025 Universo TIC - Mundo TIC Infantil</p>
+  </footer>
+
+</body>
+</html>

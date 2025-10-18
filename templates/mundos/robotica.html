@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mundo de Robótica TICU</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script>
+    let vidas = 3;
+    let preguntaActual = 0;
+
+    const preguntas = [
+      { pregunta: "¿Qué es un robot?", opciones: ["Un juguete", "Una máquina programable", "Una computadora", "Una app"], correcta: 1 },
+      { pregunta: "¿Qué hace un sensor?", opciones: ["Decora", "Detecta información", "Reproduce música", "Apaga el robot"], correcta: 1 },
+      { pregunta: "¿Qué es la robótica educativa?", opciones: ["Una materia escolar", "Un juego", "Una forma de aprender tecnología", "Un deporte"], correcta: 2 },
+      { pregunta: "¿Qué lenguaje se usa en robots?", opciones: ["Python", "Español", "HTML", "Scratch"], correcta: 0 },
+      { pregunta: "¿Qué es una instrucción?", opciones: ["Una orden para el robot", "Un dibujo", "Un sonido", "Una luz"], correcta: 0 },
+      { pregunta: "¿Qué tipo de robot sigue líneas?", opciones: ["Robot bailarín", "Robot explorador", "Robot seguidor", "Robot musical"], correcta: 2 },
+      { pregunta: "¿Qué es Bee-Bot?", opciones: ["Una abeja real", "Un robot educativo", "Una app de dibujo", "Un videojuego"], correcta: 1 },
+      { pregunta: "¿Qué parte controla al robot?", opciones: ["El sensor", "La batería", "El cerebro o microcontrolador", "La rueda"], correcta: 2 },
+      { pregunta: "¿Qué es la programación?", opciones: ["Escribir cuentos", "Dar instrucciones a una máquina", "Dibujar", "Cantar"], correcta: 1 },
+      { pregunta: "¿Qué robot se usa en primaria?", opciones: ["Roomba", "Bee-Bot", "Alexa", "Terminator"], correcta: 1 }
+    ];
+
+    function mostrarSiguientePregunta() {
+      const quiz = document.getElementById("quiz-container");
+      if (preguntaActual >= preguntas.length || vidas === 0) {
+        quiz.innerHTML = vidas === 0
+          ? "<p>¡Has perdido todas las vidas! 😢 Inténtalo otra vez.</p><button onclick='reiniciarQuiz()'>Reintentar</button>"
+          : "<p>¡Quiz completado! 🎉</p>";
+        return;
+      }
+
+      const p = preguntas[preguntaActual];
+      quiz.innerHTML = `<p>${p.pregunta}</p>` + p.opciones.map((op, i) =>
+        `<button onclick="responder(${i === p.correcta})">${op}</button>`).join("");
+    }
+
+    function responder(correcta) {
+      if (!correcta) {
+        vidas--;
+        document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
+        mostrarMensaje("¡Ups! Te queda" + (vidas === 1 ? "" : "n") + ` ${vidas} vida${vidas === 1 ? "" : "s"} 😟`);
+      } else {
+        mostrarMensaje("¡Correcto! 🎉");
+      }
+      preguntaActual++;
+      mostrarSiguientePregunta();
+    }
+
+    function mostrarMensaje(texto) {
+      const mensaje = document.getElementById("mensaje-emocional");
+      mensaje.innerText = texto;
+      mensaje.style.opacity = 1;
+      setTimeout(() => mensaje.style.opacity = 0, 2000);
+    }
+
+    function reiniciarQuiz() {
+      vidas = 3;
+      preguntaActual = 0;
+      document.getElementById("vidas").innerText = "Vidas: ❤️❤️❤️";
+      mostrarSiguientePregunta();
+    }
+
+    window.onload = mostrarSiguientePregunta;
+  </script>
+</head>
+<body class="fondo-lila">
+
+  <header class="fondo-azul">
+    <h1>🤖 Mundo de Robótica TICU</h1>
+    <p class="intro">Aquí aprenderás qué es un robot, cómo se programa y cómo puedes construir uno. ¡Prepárate para explorar el futuro con tus propias creaciones!</p>
+  </header>
+
+  <!-- Juegos gratuitos -->
+  <section class="fondo-violeta">
+    <h2 class="subtitulo">🎮 Juega y aprende sobre robótica</h2>
+    <div class="grid-accesos">
+      <div class="acceso-cuadro">
+        <p>🐝 <strong>Bee-Bot Online</strong></p>
+        <p>Programa una abeja robot para que siga instrucciones.</p>
+        <a href="https://www.bee-bot.us/" target="_blank">Jugar Bee-Bot</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🧠 <strong>Robot School</strong></p>
+        <p>Juego para aprender lógica y programación con robots.</p>
+        <a href="https://www.educacionrobotica.com/aplicaciones-para-aprender-robotica/" target="_blank">Ver Robot School</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🔧 <strong>Blockly con robots</strong></p>
+        <p>Aprende a programar robots con bloques visuales.</p>
+        <a href="https://blockly.games/" target="_blank">Jugar Blockly</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🎲 <strong>Juegos interactivos de robótica</strong></p>
+        <p>5 juegos para iniciar a los más pequeños en robótica.</p>
+        <a href="https://educaendigital.com/5-juegos-interactivos-para-iniciar-a-los-mas-pequenos-en-la-robotica" target="_blank">Ver juegos</a>
+      </div>
+    </div>
+    <p class="intro">¡Haz clic en un juego y empieza a construir tu mundo robótico!</p>
+  </section>
+
+  <!-- Videos educativos -->
+  <section class="fondo-blanco">
+    <h2>📘 Aprende antes de construir</h2>
+    <ul>
+      <li><a href="https://www.youtube.com/watch?v=7OmRyY2ke6s" target="_blank">🎥 Robótica educativa</a> – Introducción clara para niños desde los 5 años.</li>
+      <li><a href="https://www.youtube.com/watch?v=Qoyb3eOZmtk" target="_blank">🛠️ MÁQUINAS y ROBOTS para niños</a> – Ejemplos visuales y explicaciones sencillas.</li>
+      <li><a href="https://www.youtube.com/watch?v=QzhZ5k26CTI" target="_blank">📚 Robótica para niños - Clase Introductoria</a> – Curso básico para edades de 6 a 12 años.</li>
+      <li><a href="https://www.youtube.com/watch?v=Sa2cmJuLyic" target="_blank">🤖 Blippi Conoce a los Robots</a> – Exploración divertida con robots de juguete.</li>
+      <li><a href="https://www.youtube.com/watch?v=_tlBb4vKlB4" target="_blank">🔤 Aprende Palabras con Robots Transformadores</a> – Video educativo con juguetes robóticos.</li>
+      <li><a href="https://www.youtube.com/watch?v=IbC8Vz8d1eE" target="_blank">🌍 El mundo de los robots explicado a los niños</a> – Recorrido por Robostation y tipos de robots.</li>
+    </ul>
+    <p class="intro">¡Mira estos videos antes de comenzar el quiz y conviértete en un ingeniero TICU!</p>
+  </section>
+
+  <!-- Quiz TICU -->
+  <section class="fondo-amarillo">
+    <h2>❓ Quiz TICU: ¿Sabes de robótica?</h2>
+    <p>Responde las preguntas. Tienes 3 vidas. Si las pierdes, ¡inténtalo otra vez!</p>
+    <div id="quiz-container"></div>
+    <p id="vidas">Vidas: ❤️❤️❤️</p>
+    <div id="mensaje-emocional" class="mensaje"></div>
+  </section>
+
+  <footer class="fondo-verde">
+    <p>&copy; 2025 Mundo TICU - Robótica Infantil</p>
+  </footer>
+
+</body>
+</html>

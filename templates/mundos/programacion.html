@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mundo de Programación TICU</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script>
+    let vidas = 3;
+    let preguntaActual = 0;
+
+    const preguntas = [
+      { pregunta: "¿Qué hace un bucle?", opciones: ["Repite acciones", "Detiene el programa", "Cambia colores", "Borra datos"], correcta: 0 },
+      { pregunta: "¿Qué es una variable?", opciones: ["Un número fijo", "Un contenedor de datos", "Un error", "Una imagen"], correcta: 1 },
+      { pregunta: "¿Qué significa 'if' en programación?", opciones: ["Mientras", "Entonces", "Si", "Repetir"], correcta: 2 },
+      { pregunta: "¿Qué hace un botón en una app?", opciones: ["Inicia acciones", "Repite acciones", "Borra datos", "Cambia colores"], correcta: 0 },
+      { pregunta: "¿Qué tipo de dato es 'true'?", opciones: ["Texto", "Número", "Booleano", "Condicional"], correcta: 2 },
+      { pregunta: "¿Qué lenguaje se usa en Scratch?", opciones: ["Texto", "Bloques", "Python", "HTML"], correcta: 1 },
+      { pregunta: "¿Qué es un algoritmo?", opciones: ["Un dibujo", "Una historia", "Una secuencia de pasos", "Un error"], correcta: 2 },
+      { pregunta: "¿Qué herramienta permite crear en 3D con bloques?", opciones: ["PSeInt", "TinkerCAD", "Code.org", "Kodable"], correcta: 1 },
+      { pregunta: "¿Qué plataforma usa personajes como Minecraft para enseñar?", opciones: ["Blockly", "Scratch", "Code.org", "PSeInt"], correcta: 2 },
+      { pregunta: "¿Qué edad mínima recomienda Kodable?", opciones: ["3 años", "5 años", "7 años", "10 años"], correcta: 1 }
+    ];
+
+    function mostrarSiguientePregunta() {
+      const quiz = document.getElementById("quiz-container");
+      if (preguntaActual >= preguntas.length || vidas === 0) {
+        quiz.innerHTML = vidas === 0
+          ? "<p>¡Has perdido todas las vidas! 😢 Inténtalo otra vez.</p><button onclick='reiniciarQuiz()'>Reintentar</button>"
+          : "<p>¡Quiz completado! 🎉</p>";
+        return;
+      }
+
+      const p = preguntas[preguntaActual];
+      quiz.innerHTML = `<p>${p.pregunta}</p>` + p.opciones.map((op, i) =>
+        `<button onclick="responder(${i === p.correcta})">${op}</button>`).join("");
+    }
+
+    function responder(correcta) {
+      if (!correcta) {
+        vidas--;
+        document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
+        mostrarMensaje("¡Ups! Te queda" + (vidas === 1 ? "" : "n") + ` ${vidas} vida${vidas === 1 ? "" : "s"} 😟`);
+      } else {
+        mostrarMensaje("¡Correcto! 🎉");
+      }
+      preguntaActual++;
+      mostrarSiguientePregunta();
+    }
+
+    function mostrarMensaje(texto) {
+      const mensaje = document.getElementById("mensaje-emocional");
+      mensaje.innerText = texto;
+      mensaje.style.opacity = 1;
+      setTimeout(() => mensaje.style.opacity = 0, 2000);
+    }
+
+    function reiniciarQuiz() {
+      vidas = 3;
+      preguntaActual = 0;
+      document.getElementById("vidas").innerText = "Vidas: ❤️❤️❤️";
+      mostrarSiguientePregunta();
+    }
+
+    window.onload = mostrarSiguientePregunta;
+  </script>
+</head>
+<body class="fondo-lila">
+
+  <header class="fondo-azul">
+    <h1>💻 Mundo de Programación TICU</h1>
+    <p class="intro">Explora herramientas divertidas, aprende conceptos clave y demuestra lo que sabes con un quiz interactivo. ¡Vamos a programar!</p>
+  </header>
+
+  <!-- Herramientas de programación -->
+  <section class="fondo-violeta">
+    <h2 class="subtitulo">🧩 Elige tu herramienta de programación</h2>
+    <div class="grid-accesos">
+      <div class="acceso-cuadro">
+        <p>🧠 <strong>PSeInt</strong></p>
+        <p>Aprende lógica de programación con pseudocódigo en español.</p>
+        <a href="https://pseint.sourceforge.net/index.php?page=descargas.php" target="_blank">📥 Descargar PSeInt</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🎮 <strong>Scratch</strong></p>
+        <p>Crea juegos y animaciones usando bloques visuales.</p>
+        <a href="https://scratch.mit.edu/" target="_blank">Ir a Scratch</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🌐 <strong>Code.org</strong></p>
+        <p>Aprende programación jugando con personajes como Minecraft y Frozen.</p>
+        <a href="https://code.org/" target="_blank">Ir a Code.org</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🧩 <strong>Blockly Maze</strong></p>
+        <p>Resuelve laberintos usando bloques de código.</p>
+        <a href="https://blockly.games/maze?lang=es" target="_blank">Jugar Blockly Maze</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🚀 <strong>Kodable</strong></p>
+        <p>Explora mundos programables desde los 5 años.</p>
+        <a href="https://www.kodable.com/" target="_blank">Ir a Kodable</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🔧 <strong>TinkerCAD Codeblocks</strong></p>
+        <p>Diseña en 3D usando bloques de programación.</p>
+        <a href="https://www.tinkercad.com/codeblocks" target="_blank">Ir a TinkerCAD</a>
+      </div>
+    </div>
+    <p class="intro">Haz clic en el recurso que más te guste. ¡Explora, juega y aprende!</p>
+  </section>
+
+  <!-- Cuadro de información previa -->
+ <section class="fondo-blanco">
+  <h2>📘 Aprende antes de responder</h2>
+  <ul>
+    <li><a href="https://www.youtube.com/watch?v=65Ed9c8ucaY" target="_blank">🔁 ¿Qué es un bucle? – Video de Smile and Learn</a></li>
+    <li><a href="https://www.educacionrobotica.com/programacion/variable/" target="_blank">📦 ¿Qué es una variable? – Educación Robótica</a></li>
+    <li><a href="https://lenguajesdeprogramacion.net/diccionario/que-es-un-if-en-programacion/" target="_blank">🔍 ¿Qué significa 'if'? – Lenguajes de Programación</a></li>
+    <li><a href="https://www.youtube.com/watch?v=2XXdn5XSvFs" target="_blank">✅ ¿Qué es un dato booleano? – Te lo digo en Código</a></li>
+    <li><a href="https://educacionrobotica.com/blog/algoritmo-explicacion-ninos/" target="_blank">🧠 ¿Qué es un algoritmo? – Educación Robótica</a></li>
+    <li><a href="https://programacionpro.com/que-lenguaje-de-programacion-usa-scratch/" target="_blank">🧱 ¿Qué lenguaje usa Scratch? – ProgramaciónPro</a></li>
+    <li><a href="https://www.tinkercad.com/codeblocks" target="_blank">🔧 ¿Qué es TinkerCAD Codeblocks? – Página oficial</a></li>
+    <li><a href="https://code.org/es/parents" target="_blank">🎮 ¿Cómo enseña Code.org? – Página para padres</a></li>
+    <li><a href="https://codigo21.educacion.navarra.es/2016/03/23/kodable-juego-educativo-infantil-para-aprender-conceptos-basicos-de-programacion-y-resolucion-de-problemas/" target="_blank">🚀 Edad recomendada para Kodable – Código21 Navarra</a></li>
+    <li><a href="https://www.bbvaapimarket.com/es/mundo-api/botones-dentro-de-las-aplicaciones-consejos-para-desarrolladores-front-end/" target="_blank">📲 ¿Qué hace un botón en una app? – BBVA API Market</a></li>
+  </ul>
+  <p class="intro">Consulta estos recursos antes de comenzar el quiz. ¡Aprender es el primer paso para ganar!</p>
+</section>
+  <!-- Quiz TICU -->
+  <section class="fondo-amarillo">
+    <h2>❓ Quiz TICU: ¿Sabes programar?</h2>
+    <p>Responde las preguntas. Tienes 3 vidas. Si las pierdes, ¡inténtalo otra vez!</p>
+    <div id="quiz-container"></div>
+    <p id="vidas">Vidas: ❤️❤️❤️</p>
+    <div id="mensaje-emocional" class="mensaje"></div>
+  </section>
+
+  <footer class="fondo-verde">
+    <p>&copy; 2025 Mundo TICU - Programación Infantil</p>
+  </footer>
+
+</body>
+</html>

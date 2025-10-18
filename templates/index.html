@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mundo TIC Infantil</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+  <!-- Música de fondo -->
+  <audio id="musicaFondo" autoplay loop>
+    <source src="{{ url_for('static', filename='audio/musica-infantil.mp3') }}" type="audio/mpeg">
+    Tu navegador no soporta audio.
+  </audio>
+
+  <!-- Pantalla de bienvenida -->
+  <header class="fondo-rosado">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='img/logo-fc.png') }}" alt="Logo TICU" class="img-logo">
+    </div>
+    <h1>🌟 ¡Bienvenido a Mundo TIC! 🌟</h1>
+    <p class="intro">
+      Las TIC nos ayudan a aprender, crear y jugar.  
+      ¡Explora mundos digitales llenos de retos, historias y diversión! 🎮📱🌍
+    </p>
+
+    <div class="boton-navegacion">
+      <a href="#mundos" class="btn-mundo">🌍 Ir al Mundo TIC</a>
+    </div>
+    <section id="accesos-directos" class="fondo-menta">
+  <h2 class="subtitulo">🚪 Accede a tus mundos</h2>
+  <div class="grid-accesos">
+    <a href="/universo-tic" class="acceso-cuadro">🌍 Universo TIC</a>
+    <a href="/sala-retos-tic" class="acceso-cuadro">🎮 Sala de Retos TIC</a>
+    <a href="/herramientas-tic" class="acceso-cuadro">🧰 Herramientas TIC</a> <!-- NUEVO -->
+  </div>
+</section>
+
+    <button onclick="activarAccesibilidad()">🧩 Modo accesible</button>
+  </header>
+
+  <nav class="fondo-menta">
+    <ul class="nav-links">
+      <li><a href="#mundos">🌍 Mundos TIC</a></li>
+      <li><a href="#actividades">🎮 Actividades</a></li>
+      <li><a href="#comunidad">💬 Comunidad</a></li>
+      <li><a href="#logros">🏅 Logros</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="mundos" class="fondo-lila">
+      <h2>🌍 Explora los mundos TIC</h2>
+      <div class="mundos-grid">
+        <a href="/mundos/programacion" class="mundo-texto">🧠 <strong>Programación</strong><br><span>¡Crea tus propios juegos!</span></a>
+        <a href="/mundos/multimedia" class="mundo-texto">🎨 <strong>Multimedia</strong><br><span>Cuenta historias con sonidos e imágenes.</span></a>
+        <a href="/mundos/internet-seguro" class="mundo-texto">🛡️ <strong>Internet Seguro</strong><br><span>Navega con respeto y cuidado.</span></a>
+      </div>
+    </section>
+
+    <section id="actividades" class="fondo-amarillo">
+      <h2>🎮 Actividades divertidas</h2>
+      <p>¡Juegos, videos y retos para ganar medallas! 🏅</p>
+      <div class="actividades">
+        <button onclick="mostrarMensaje('¡Buen trabajo!')">Juegos Interactivos</button>
+        <button onclick="mostrarMensaje('¡Sigue explorando!')">Videos TIC</button>
+        <button onclick="mostrarMensaje('¡Reto completado!')">Retos Semanales</button>
+      </div>
+      <div id="mensaje-emocional" class="mensaje"></div>
+    </section>
+
+    <section id="comunidad" class="fondo-celeste">
+      <h2>💬 ¿Tienes preguntas?</h2>
+      <form>
+        <input type="text" placeholder="Escribe tu pregunta aquí">
+        <button type="submit">Enviar</button>
+      </form>
+
+      <p class="negrita-texto2">
+        <strong>¡Tú y NAVITEL son el equipo ideal!</strong><br>
+        Estoy aquí para ayudarte. ¿Con qué necesitas ayuda?
+      </p>
+
+      <div class="mascota-container">
+        <img src="{{ url_for('static', filename='img/mascote-fc.png') }}" alt="Mascota TICU" class="mascota">
+        <p class="mascota-texto">🐧 <strong>TICU</strong><br><span>¡Hola! Soy tu guía en este mundo digital.</span></p>
+      </div>
+    </section>
+
+    <section id="logros" class="fondo-blanco">
+      <h2>🏅 Tus logros</h2>
+      <div class="medallas">
+        <div class="medalla desbloqueada">Nivel 1: Explorador TIC</div>
+        <div class="medalla bloqueada">Nivel 2: Creador Multimedia</div>
+        <div class="medalla bloqueada">Nivel 3: Navegante Seguro</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="fondo-menta">
+    <p>&copy; 2025 Mundo TIC Infantil</p>
+  </footer>
+
+  <script>
+    function mostrarMensaje(texto) {
+      const mensaje = document.getElementById("mensaje-emocional");
+      mensaje.textContent = texto;
+      mensaje.style.opacity = 1;
+      setTimeout(() => mensaje.style.opacity = 0, 3000);
+    }
+
+    function activarAccesibilidad() {
+      document.body.style.fontSize = "1.4em";
+      document.body.style.backgroundColor = "#ffffff";
+      document.body.style.color = "#000000";
+    }
+  </script>
+</body>
+</html>

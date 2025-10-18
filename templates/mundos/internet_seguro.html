@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mundo de Internet Seguro TICU</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script>
+    let vidas = 3;
+    let preguntaActual = 0;
+
+    const preguntas = [
+      { pregunta: "¿Qué es el phishing?", opciones: ["Un juego", "Un virus", "Un engaño para robar datos", "Una red social"], correcta: 2 },
+      { pregunta: "¿Qué debes hacer si ves algo raro en internet?", opciones: ["Ignorarlo", "Compartirlo", "Reportarlo", "Descargarlo"], correcta: 2 },
+      { pregunta: "¿Qué es una contraseña segura?", opciones: ["1234", "Tu nombre", "Una mezcla de letras, números y símbolos", "Solo emojis"], correcta: 2 },
+      { pregunta: "¿Qué no debes compartir en redes sociales?", opciones: ["Tu comida", "Tu dirección", "Tu dibujo", "Tu mascota"], correcta: 1 },
+      { pregunta: "¿Qué es el ciberacoso?", opciones: ["Un juego en línea", "Una broma", "Molestar a alguien por internet", "Un tipo de app"], correcta: 2 },
+      { pregunta: "¿Qué es Interland?", opciones: ["Una red social", "Un juego sobre seguridad digital", "Una app de fotos", "Un buscador"], correcta: 1 },
+      { pregunta: "¿Qué hace un antivirus?", opciones: ["Crea virus", "Protege tu dispositivo", "Borra fotos", "Cambia tu fondo"], correcta: 1 },
+      { pregunta: "¿Qué es la privacidad digital?", opciones: ["Compartir todo", "Guardar secretos", "Controlar tu información personal", "Usar emojis"], correcta: 2 },
+      { pregunta: "¿Qué debes hacer antes de aceptar una solicitud de amistad?", opciones: ["Aceptar rápido", "Ver si lo conoces", "Ignorar siempre", "Compartir tu contraseña"], correcta: 1 },
+      { pregunta: "¿Qué es una huella digital?", opciones: ["Tu dedo", "Tu historial en internet", "Tu firma", "Tu contraseña"], correcta: 1 }
+    ];
+
+    function mostrarSiguientePregunta() {
+      const quiz = document.getElementById("quiz-container");
+      if (preguntaActual >= preguntas.length || vidas === 0) {
+        quiz.innerHTML = vidas === 0
+          ? "<p>¡Has perdido todas las vidas! 😢 Inténtalo otra vez.</p><button onclick='reiniciarQuiz()'>Reintentar</button>"
+          : "<p>¡Quiz completado! 🎉</p>";
+        return;
+      }
+
+      const p = preguntas[preguntaActual];
+      quiz.innerHTML = `<p>${p.pregunta}</p>` + p.opciones.map((op, i) =>
+        `<button onclick="responder(${i === p.correcta})">${op}</button>`).join("");
+    }
+
+    function responder(correcta) {
+      if (!correcta) {
+        vidas--;
+        document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
+        mostrarMensaje("¡Ups! Te queda" + (vidas === 1 ? "" : "n") + ` ${vidas} vida${vidas === 1 ? "" : "s"} 😟`);
+      } else {
+        mostrarMensaje("¡Correcto! 🎉");
+      }
+      preguntaActual++;
+      mostrarSiguientePregunta();
+    }
+
+    function mostrarMensaje(texto) {
+      const mensaje = document.getElementById("mensaje-emocional");
+      mensaje.innerText = texto;
+      mensaje.style.opacity = 1;
+      setTimeout(() => mensaje.style.opacity = 0, 2000);
+    }
+
+    function reiniciarQuiz() {
+      vidas = 3;
+      preguntaActual = 0;
+      document.getElementById("vidas").innerText = "Vidas: ❤️❤️❤️";
+      mostrarSiguientePregunta();
+    }
+
+    window.onload = mostrarSiguientePregunta;
+  </script>
+</head>
+<body class="fondo-lila">
+
+  <header class="fondo-azul">
+    <h1>🛡️ Mundo de Internet Seguro TICU</h1>
+    <p class="intro">Aquí aprenderás a navegar con cuidado, proteger tu información y evitar peligros en línea. ¡Prepárate para convertirte en un experto digital!</p>
+  </header>
+
+  <!-- Juegos gratuitos -->
+  <section class="fondo-violeta">
+    <h2 class="subtitulo">🎮 Juega y aprende sobre seguridad digital</h2>
+    <div class="grid-accesos">
+      <div class="acceso-cuadro">
+        <p>🕵️ <strong>Descubre al suplantador</strong></p>
+        <p>Juego sobre suplantación de identidad y privacidad.</p>
+        <a href="https://www.incibe.es/menores/juegos/juegos-didacticos" target="_blank">Jugar en INCIBE</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🌍 <strong>Interland</strong></p>
+        <p>Juego de Google para aprender a ser genial en internet.</p>
+        <a href="https://beinternetawesome.withgoogle.com/es_es/interland" target="_blank">Jugar Interland</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🧩 <strong>Los puzles de la ciberseguridad</strong></p>
+        <p>Juega en familia y reflexiona sobre el uso seguro de internet.</p>
+        <a href="https://www.incibe.es/menores/juegos/juegos-didacticos" target="_blank">Ver puzles</a>
+      </div>
+    </div>
+    <p class="intro">¡Haz clic en un juego y pon a prueba tu seguridad digital!</p>
+  </section>
+
+  <!-- Videos educativos -->
+  <section class="fondo-blanco">
+    <h2>📘 Aprende antes de navegar</h2>
+    <ul>
+      <li><a href="https://www.youtube.com/watch?v=rHDTJQKW2y8" target="_blank">🔐 Privacidad online para niños – Protección y seguridad</a></li>
+      <li><a href="https://www.youtube.com/watch?v=SD9K8Pfogzc" target="_blank">🧭 Navegando Seguro en Internet – Consejos para niños</a></li>
+      <li><a href="https://www.youtube.com/watch?v=ksYTGkwk2E4" target="_blank">🛡️ USO SEGURO DEL INTERNET – Smile and Learn</a></li>
+      <li><a href="https://www.youtube.com/watch?v=G46KyZTxPE4" target="_blank">⚠️ Seguridad en línea para niños – Riesgos y soluciones</a></li>
+      <li><a href="https://www.youtube.com/watch?v=fiv71yqyVz0" target="_blank">💡 CONSEJOS de CIBERSEGURIDAD para NIÑOS</a></li>
+      <li><a href="https://www.youtube.com/watch?v=0Npqkm_2k94" target="_blank">🌐 El Internet explicado a niños de primaria</a></li>
+    </ul>
+    <p class="intro">¡Mira estos videos antes de comenzar el quiz y conviértete en un navegante seguro!</p>
+  </section>
+
+  <!-- Quiz TICU -->
+  <section class="fondo-amarillo">
+    <h2>❓ Quiz TICU: ¿Sabes navegar seguro?</h2>
+    <p>Responde las preguntas. Tienes 3 vidas. Si las pierdes, ¡inténtalo otra vez!</p>
+    <div id="quiz-container"></div>
+    <p id="vidas">Vidas: ❤️❤️❤️</p>
+    <div id="mensaje-emocional" class="mensaje"></div>
+  </section>
+
+  <footer class="fondo-verde">
+    <p>&copy; 2025 Mundo TICU - Internet Seguro Infantil</p>
+  </footer>
+
+</body>
+</html>

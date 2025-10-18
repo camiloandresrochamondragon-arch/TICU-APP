@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mundo de Realidad Virtual TICU</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script>
+    let vidas = 3;
+    let preguntaActual = 0;
+
+    const preguntas = [
+      { pregunta: "¿Qué es la realidad virtual?", opciones: ["Un videojuego", "Una simulación digital inmersiva", "Una red social", "Una app de dibujo"], correcta: 1 },
+      { pregunta: "¿Qué se necesita para usar VR?", opciones: ["Un joystick", "Un casco o visor", "Un teclado", "Un micrófono"], correcta: 1 },
+      { pregunta: "¿Qué tipo de contenido se puede explorar en VR?", opciones: ["Solo juegos", "Videos 360°, simulaciones y recorridos", "Solo música", "Solo texto"], correcta: 1 },
+      { pregunta: "¿Qué es CoSpaces Edu?", opciones: ["Una red social", "Una app para crear mundos VR", "Un videojuego", "Una app de dibujo"], correcta: 1 },
+      { pregunta: "¿Qué precaución debemos tener al usar VR?", opciones: ["Usarla en movimiento", "Evitar usarla por mucho tiempo", "Compartir contraseñas", "Usarla con los ojos cerrados"], correcta: 1 },
+      { pregunta: "¿Qué es un video 360°?", opciones: ["Un video que se repite", "Un video que puedes mirar en todas direcciones", "Un video musical", "Un video en blanco y negro"], correcta: 1 },
+      { pregunta: "¿Qué es Anatomyou?", opciones: ["Una app de dibujo", "Una app para explorar el cuerpo humano en VR", "Una red social", "Un videojuego"], correcta: 1 },
+      { pregunta: "¿Qué es Mozaik3D?", opciones: ["Una app de arte", "Una app educativa con modelos 3D", "Una red social", "Un juego de carreras"], correcta: 1 },
+      { pregunta: "¿Qué es Paint Draw AR?", opciones: ["Una app para dibujar en el aire", "Una app de música", "Una red social", "Una app de texto"], correcta: 0 },
+      { pregunta: "¿Qué es Google Spotlight Stories?", opciones: ["Una app de noticias", "Una app de historias animadas en 360°", "Una red social", "Una app de dibujo"], correcta: 1 }
+    ];
+
+    function mostrarSiguientePregunta() {
+      const quiz = document.getElementById("quiz-container");
+      if (preguntaActual >= preguntas.length || vidas === 0) {
+        quiz.innerHTML = vidas === 0
+          ? "<p>¡Has perdido todas las vidas! 😢 Inténtalo otra vez.</p><button onclick='reiniciarQuiz()'>Reintentar</button>"
+          : "<p>¡Quiz completado! 🎉</p>";
+        return;
+      }
+
+      const p = preguntas[preguntaActual];
+      quiz.innerHTML = `<p>${p.pregunta}</p>` + p.opciones.map((op, i) =>
+        `<button onclick="responder(${i === p.correcta})">${op}</button>`).join("");
+    }
+
+    function responder(correcta) {
+      if (!correcta) {
+        vidas--;
+        document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
+        mostrarMensaje("¡Ups! Te queda" + (vidas === 1 ? "" : "n") + ` ${vidas} vida${vidas === 1 ? "" : "s"} 😟`);
+      } else {
+        mostrarMensaje("¡Correcto! 🎉");
+      }
+      preguntaActual++;
+      mostrarSiguientePregunta();
+    }
+
+    function mostrarMensaje(texto) {
+      const mensaje = document.getElementById("mensaje-emocional");
+      mensaje.innerText = texto;
+      mensaje.style.opacity = 1;
+      setTimeout(() => mensaje.style.opacity = 0, 2000);
+    }
+
+    function reiniciarQuiz() {
+      vidas = 3;
+      preguntaActual = 0;
+      document.getElementById("vidas").innerText = "Vidas: ❤️❤️❤️";
+      mostrarSiguientePregunta();
+    }
+
+    window.onload = mostrarSiguientePregunta;
+  </script>
+</head>
+<body class="fondo-lila">
+
+  <header class="fondo-azul">
+    <h1>🕶️ Mundo de Realidad Virtual TICU</h1>
+    <p class="intro">Aquí aprenderás cómo explorar mundos 360°, crear simulaciones educativas y navegar con seguridad en entornos virtuales. ¡Prepárate para sumergirte en nuevas dimensiones!</p>
+  </header>
+
+  <!-- Apps y simuladores -->
+  <section class="fondo-violeta">
+    <h2 class="subtitulo">🎮 Explora mundos virtuales</h2>
+    <div class="grid-accesos">
+      <div class="acceso-cuadro">
+        <p>🌍 <strong>CoSpaces Edu</strong></p>
+        <p>Crea tus propios mundos VR y recorridos interactivos.</p>
+        <a href="https://cospaces.io/edu/" target="_blank">Explorar CoSpaces</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🧠 <strong>Mozaik3D</strong></p>
+        <p>Modelos 3D educativos para explorar ciencia e historia.</p>
+        <a href="https://www.mozaweb.com/" target="_blank">Descargar Mozaik3D</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🫀 <strong>Anatomyou VR</strong></p>
+        <p>Viaja por el cuerpo humano en primera persona.</p>
+        <a href="https://www.anatomyou.com/" target="_blank">Explorar Anatomyou</a>
+      </div>
+    </div>
+    <p class="intro">¡Haz clic en una app y empieza a explorar mundos virtuales!</p>
+  </section>
+
+  <!-- Videos educativos -->
+  <section class="fondo-blanco">
+    <h2>📘 Aprende antes de explorar</h2>
+    <ul>
+      <li><a href="https://www.youtube.com/watch?v=oZ8CrFYCWU4" target="_blank">🎬 Los Creadores 360º VR</a> – Animación inmersiva para entender cómo se vive una historia en VR.</li>
+      <li><a href="https://www.youtube.com/watch?v=vwe0Heuhiq8" target="_blank">🏫 Realidad Virtual en las aulas</a> – Cómo usar VR para mejorar el aprendizaje.</li>
+      <li><a href="https://www.youtube.com/watch?v=PvuDBX89k34" target="_blank">🧠 Educación sin muros</a> – Cómo la VR transforma el aula y la motivación.</li>
+      <li><a href="https://www.youtube.com/watch?v=kpZP57SzJ38" target="_blank">📱 Realidad aumentada en tu aula</a> – Ejemplo práctico de RA en educación.</li>
+      <li><a href="https://www.youtube.com/watch?v=w0Nni6VelyQ" target="_blank">🎵 Quiero volver al aula</a> – Canción que conecta emoción y tecnología educativa.</li>
+      <li><a href="https://www.youtube.com/watch?v=UrSJ_uWrQDw" target="_blank">🪂 Video 360 - Caída libre</a> – Simulación extrema para entender la inmersión VR.</li>
+    </ul>
+    <p class="intro">¡Mira estos videos antes de comenzar el quiz y conviértete en un explorador TICU!</p>
+  </section>
+
+  <!-- Quiz TICU -->
+  <section class="fondo-amarillo">
+    <h2>❓ Quiz TICU: ¿Sabes de realidad virtual?</h2>
+    <p>Responde las preguntas. Tienes 3 vidas. Si las pierdes, ¡inténtalo otra vez!</p>
+    <div id="quiz-container"></div>
+    <p id="vidas">Vidas: ❤️❤️❤️</p>
+    <div id="mensaje-emocional" class="mensaje"></div>
+  </section>
+
+  <footer class="fondo-verde">
+    <p>&copy; 2025 Mundo TICU - Realidad Virtual Educativa</p>
+  </footer>
+
+</body>
+</html>

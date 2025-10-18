@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Herramientas TIC</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <style>
+    .cuadro-herramienta {
+      background-color: #fff0f5;
+      border: 2px dashed #dda0dd;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      position: relative;
+    }
+    .cuadro-herramienta:hover {
+      background-color: #ffe4e1;
+      transform: scale(1.02);
+    }
+    .contenido-herramienta {
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      border-top: 1px solid #ccc;
+      font-size: 1em;
+      animation: aparecer 0.5s ease;
+    }
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .cuadro-herramienta h2 {
+      font-size: 1.5em;
+      color: #6a5acd;
+      margin-bottom: 0;
+    }
+    .cuadro-herramienta a {
+      display: block;
+      margin: 5px 0;
+      padding: 8px;
+      background-color: #add8e6;
+      color: #333;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .cuadro-herramienta a:hover {
+      background-color: #b0e0e6;
+    }
+    .muneco {
+      position: absolute;
+      top: -40px;
+      right: -10px;
+      width: 60px;
+    }
+    .mensaje-ticu {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #ff69b4;
+    }
+  </style>
+  <script>
+    function toggleContenido(id) {
+      const contenido = document.getElementById(id);
+      contenido.style.display = contenido.style.display === "block" ? "none" : "block";
+    }
+  </script>
+</head>
+<body class="fondo-celeste">
+
+  <header class="fondo-rosado">
+    <h1>🧰 Herramientas TIC</h1>
+    <p class="intro">Explora estas herramientas digitales básicas que usamos para aprender, crear y comunicar.</p>
+  </header>
+
+  <main>
+    <div class="cuadro-herramienta fondo-blanco" onclick="toggleContenido('word')">
+      <h2>📄 Word</h2>
+      <img src="{{ url_for('static', filename='img/muneco-word.png') }}" alt="Muñeco Word" class="muneco">
+      <div id="word" class="contenido-herramienta">
+        <p>Escribe, edita y decora textos. Aprende a usar fuentes, insertar imágenes y guardar tus documentos.</p>
+        <a href="https://www.youtube.com/watch?v=oNpc8zVjCfk" target="_blank">🎥 Ver tutorial para niños</a>
+        <a href="https://support.microsoft.com/es-es/word" target="_blank">📘 Guía oficial de Word</a>
+        <p class="mensaje-ticu">🐧 ¡Muy bien! Has explorado Word. ¡Sigue así!</p>
+      </div>
+    </div>
+
+    <div class="cuadro-herramienta fondo-menta" onclick="toggleContenido('excel')">
+      <h2>📊 Excel</h2>
+      <img src="{{ url_for('static', filename='img/muneco-excel.png') }}" alt="Muñeco Excel" class="muneco">
+      <div id="excel" class="contenido-herramienta">
+        <p>Organiza información en tablas. Aprende a sumar, ordenar y usar fórmulas básicas.</p>
+        <a href="https://www.youtube.com/watch?v=UUJ_P_Ya0mU" target="_blank">🎥 Curso básico para niños</a>
+        <a href="https://support.microsoft.com/es-es/excel" target="_blank">📘 Guía oficial de Excel</a>
+        <p class="mensaje-ticu">🐧 ¡Genial! Ya sabes cómo usar Excel. ¡A organizar!</p>
+      </div>
+    </div>
+
+    <div class="cuadro-herramienta fondo-amarillo" onclick="toggleContenido('canva')">
+      <h2>🎨 Canva</h2>
+      <img src="{{ url_for('static', filename='img/muneco-canva.png') }}" alt="Muñeco Canva" class="muneco">
+      <div id="canva" class="contenido-herramienta">
+        <p>Diseña carteles, presentaciones y videos. Usa plantillas y crea tus propios proyectos visuales.</p>
+        <a href="https://www.youtube.com/watch?v=po7yiNQEb20" target="_blank">🎥 Canva para niños</a>
+        <a href="https://www.canva.com/learn/" target="_blank">📘 Aprende más en Canva</a>
+        <p class="mensaje-ticu">🐧 ¡Tu creatividad brilla! ¡Bien hecho!</p>
+      </div>
+    </div>
+
+    <div class="cuadro-herramienta fondo-lila" onclick="toggleContenido('powerpoint')">
+      <h2>📽️ PowerPoint</h2>
+      <img src="{{ url_for('static', filename='img/muneco-powerpoint.png') }}" alt="Muñeco PowerPoint" class="muneco">
+      <div id="powerpoint" class="contenido-herramienta">
+        <p>Crea presentaciones con texto, imágenes y animaciones. Ideal para compartir ideas en clase.</p>
+        <a href="https://www.youtube.com/watch?v=UUJ_P_Ya0mU" target="_blank">🎥 Curso fácil para niños</a>
+        <a href="https://support.microsoft.com/es-es/powerpoint" target="_blank">📘 Guía oficial de PowerPoint</a>
+        <p class="mensaje-ticu">🐧 ¡Presenta tus ideas con estilo! ¡Bravo!</p>
+      </div>
+    </div>
+<div class="cuadro-herramienta fondo-celeste" onclick="toggleContenido('navegadores')">
+  <h2>🌐 Navegadores web</h2>
+  <img src="{{ url_for('static', filename='img/muneco-navegador.png') }}" alt="Muñeco Navegador" class="muneco">
+  <div id="navegadores" class="contenido-herramienta">
+    <p>Descubre cómo usar Chrome, Edge o Firefox para buscar información, guardar páginas y navegar con seguridad.</p>
+    <a href="https://tecnologia.yoaprendoamimanera.com/2025/01/guia-basica-para-usar-navegadores-web.html" target="_blank">📘 Guía gratuita para usar navegadores web</a>
+    <p class="mensaje-ticu">🐧 ¡Explorador digital desbloqueado! 🧭</p>
+  </div>
+</div>
+
+    <div class="cuadro-herramienta fondo-rosado" onclick="toggleContenido('correo')">
+      <h2>📧 Correo electrónico</h2>
+      <img src="{{ url_for('static', filename='img/muneco-correo.png') }}" alt="Muñeco Correo" class="muneco">
+      <div id="correo" class="contenido-herramienta">
+        <p>Aprende a enviar mensajes, adjuntar archivos y comunicarte con tus profesores y amigos.</p>
+        <a href="https://support.google.com/mail/answer/7126229?hl=es" target="_blank">📘 Guía de Gmail para principiantes</a>
+        <p class="mensaje-ticu">🐧 ¡Mensaje enviado con éxito! 📬</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="fondo-menta">
+    <p>&copy; 2025 Herramientas TIC - Mundo TIC Infantil</p>
+  </footer>
+
+</body>
+</html>

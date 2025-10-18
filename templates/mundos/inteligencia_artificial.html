@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mundo de Inteligencia Artificial TICU</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script>
+    let vidas = 3;
+    let preguntaActual = 0;
+
+    const preguntas = [
+      { pregunta: "¿Qué es la inteligencia artificial?", opciones: ["Una app de juegos", "Una máquina que aprende", "Un robot físico", "Una red social"], correcta: 1 },
+      { pregunta: "¿Qué hace un asistente virtual?", opciones: ["Juega contigo", "Te ayuda con tareas digitales", "Te llama por teléfono", "Te dibuja"], correcta: 1 },
+      { pregunta: "¿Qué significa 'aprender' para una máquina?", opciones: ["Copiar dibujos", "Guardar contraseñas", "Mejorar con datos", "Dormir"], correcta: 2 },
+      { pregunta: "¿Qué es ChatGPT?", opciones: ["Un videojuego", "Un robot físico", "Una IA que conversa", "Una red social"], correcta: 2 },
+      { pregunta: "¿Qué debemos cuidar al usar IA?", opciones: ["La batería", "La ética y la privacidad", "El volumen", "La velocidad"], correcta: 1 },
+      { pregunta: "¿Qué es el reconocimiento facial?", opciones: ["Un juego", "Una forma de ver emociones", "Una IA que identifica rostros", "Una app de selfies"], correcta: 2 },
+      { pregunta: "¿Qué tipo de datos usa la IA?", opciones: ["Fotos y textos", "Solo emojis", "Solo dibujos", "Solo sonidos"], correcta: 0 },
+      { pregunta: "¿Qué es Arcade AI?", opciones: ["Un robot", "Una app de dibujo", "Un juego para aprender IA", "Una red social"], correcta: 2 },
+      { pregunta: "¿Qué es un algoritmo?", opciones: ["Una canción", "Una receta para que la IA actúe", "Un dibujo", "Un juguete"], correcta: 1 },
+      { pregunta: "¿Qué hace una IA en la educación?", opciones: ["Juega fútbol", "Ayuda a aprender", "Borra tareas", "Cambia colores"], correcta: 1 }
+    ];
+
+    function mostrarSiguientePregunta() {
+      const quiz = document.getElementById("quiz-container");
+      if (preguntaActual >= preguntas.length || vidas === 0) {
+        quiz.innerHTML = vidas === 0
+          ? "<p>¡Has perdido todas las vidas! 😢 Inténtalo otra vez.</p><button onclick='reiniciarQuiz()'>Reintentar</button>"
+          : "<p>¡Quiz completado! 🎉</p>";
+        return;
+      }
+
+      const p = preguntas[preguntaActual];
+      quiz.innerHTML = `<p>${p.pregunta}</p>` + p.opciones.map((op, i) =>
+        `<button onclick="responder(${i === p.correcta})">${op}</button>`).join("");
+    }
+
+    function responder(correcta) {
+      if (!correcta) {
+        vidas--;
+        document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
+        mostrarMensaje("¡Ups! Te queda" + (vidas === 1 ? "" : "n") + ` ${vidas} vida${vidas === 1 ? "" : "s"} 😟`);
+      } else {
+        mostrarMensaje("¡Correcto! 🎉");
+      }
+      preguntaActual++;
+      mostrarSiguientePregunta();
+    }
+
+    function mostrarMensaje(texto) {
+      const mensaje = document.getElementById("mensaje-emocional");
+      mensaje.innerText = texto;
+      mensaje.style.opacity = 1;
+      setTimeout(() => mensaje.style.opacity = 0, 2000);
+    }
+
+    function reiniciarQuiz() {
+      vidas = 3;
+      preguntaActual = 0;
+      document.getElementById("vidas").innerText = "Vidas: ❤️❤️❤️";
+      mostrarSiguientePregunta();
+    }
+
+    window.onload = mostrarSiguientePregunta;
+  </script>
+</head>
+<body class="fondo-lila">
+
+  <header class="fondo-azul">
+    <h1>🤖 Mundo de Inteligencia Artificial TICU</h1>
+    <p class="intro">Aquí aprenderás qué es la IA, cómo funciona y cómo puede ayudarte a aprender, crear y jugar. ¡Prepárate para conocer el futuro digital!</p>
+  </header>
+
+  <!-- Juegos interactivos -->
+  <section class="fondo-violeta">
+    <h2 class="subtitulo">🎮 Juega y aprende sobre IA</h2>
+    <div class="grid-accesos">
+      <div class="acceso-cuadro">
+        <p>🧠 <strong>Educaplay: IA para niños</strong></p>
+        <p>Juego tipo test para identificar conceptos básicos de IA.</p>
+        <a href="https://es.educaplay.com/recursos-educativos/22982411-inteligencia_artificial_para_ninos.html" target="_blank">Jugar en Educaplay</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🎮 <strong>Arcade AI</strong></p>
+        <p>Juego interactivo para aprender sobre IA generativa y algoritmos.</p>
+        <a href="https://serinteligenciaartificial.com/arcade-ai/" target="_blank">Jugar Arcade AI</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🛠️ <strong>Megaprofe IA</strong></p>
+        <p>Crea actividades educativas usando inteligencia artificial.</p>
+        <a href="https://megaprofe.es/generador-de-actividades-ia/" target="_blank">Usar Megaprofe</a>
+      </div>
+    </div>
+    <p class="intro">¡Haz clic en un juego y explora cómo piensa una máquina!</p>
+  </section>
+
+  <!-- Videos educativos -->
+  <section class="fondo-blanco">
+    <h2>📘 Aprende antes de jugar</h2>
+    <ul>
+      <li><a href="https://www.youtube.com/watch?v=UKncFg0PyEk" target="_blank">🧠 ¿Qué es la IA? – Explicación para niños</a></li>
+      <li><a href="https://www.youtube.com/watch?v=nzJkkotI4FI" target="_blank">🎥 Amibox Kids – Inteligencia Artificial</a></li>
+      <li><a href="https://www.youtube.com/watch?v=yq_9LGdveVA" target="_blank">🔐 Uso responsable de la IA</a></li>
+      <li><a href="https://www.youtube.com/watch?v=4iSqAQWnuo8" target="_blank">📚 ¿Cómo aprenden las máquinas?</a></li>
+      <li><a href="https://www.youtube.com/watch?v=iODs64A7nCw" target="_blank">🤖 IA en la vida cotidiana</a></li>
+      <li><a href="https://www.youtube.com/watch?v=fDiK8awDOCU" target="_blank">🏫 IA en la educación</a></li>
+    </ul>
+    <p class="intro">¡Mira estos videos antes de comenzar el quiz y conviértete en un explorador TICU!</p>
+  </section>
+
+  <!-- Quiz TICU -->
+  <section class="fondo-amarillo">
+    <h2>❓ Quiz TICU: ¿Sabes de inteligencia artificial?</h2>
+    <p>Responde las preguntas. Tienes 3 vidas. Si las pierdes, ¡inténtalo otra vez!</p>
+    <div id="quiz-container"></div>
+    <p id="vidas">Vidas: ❤️❤️❤️</p>
+    <div id="mensaje-emocional" class="mensaje"></div>
+  </section>
+
+  <footer class="fondo-verde">
+    <p>&copy; 2025 Mundo TICU - Inteligencia Artificial Infantil</p>
+  </footer>
+
+</body>
+</html>

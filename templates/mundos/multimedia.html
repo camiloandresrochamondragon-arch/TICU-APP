@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mundo de Multimedia TICU</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script>
+    let vidas = 3;
+    let preguntaActual = 0;
+
+    const preguntas = [
+      { pregunta: "¿Qué es Canva?", opciones: ["Un editor de texto", "Una app de dibujo", "Una herramienta de diseño", "Un juego"], correcta: 2 },
+      { pregunta: "¿Qué formato se usa para imágenes?", opciones: ["MP3", "JPG", "DOCX", "PDF"], correcta: 1 },
+      { pregunta: "¿Qué hace Audacity?", opciones: ["Edita audio", "Edita video", "Edita texto", "Edita fotos"], correcta: 0 },
+      { pregunta: "¿Qué es una animación?", opciones: ["Una imagen estática", "Un texto largo", "Un movimiento visual", "Un archivo de sonido"], correcta: 2 },
+      { pregunta: "¿Qué herramienta sirve para editar videos?", opciones: ["Paint", "Scratch", "CapCut", "Excel"], correcta: 2 },
+      { pregunta: "¿Qué es un filtro en multimedia?", opciones: ["Un virus", "Un efecto visual", "Un archivo", "Un botón"], correcta: 1 },
+      { pregunta: "¿Qué tipo de archivo es MP3?", opciones: ["Imagen", "Texto", "Audio", "Video"], correcta: 2 },
+      { pregunta: "¿Qué hace una transición en video?", opciones: ["Agrega música", "Cambia de escena", "Borra texto", "Duplica imágenes"], correcta: 1 },
+      { pregunta: "¿Qué es una capa en diseño?", opciones: ["Una hoja de papel", "Una parte editable", "Un botón", "Un sonido"], correcta: 1 },
+      { pregunta: "¿Qué app permite crear presentaciones con imágenes y texto?", opciones: ["Word", "PowerPoint", "Excel", "Audacity"], correcta: 1 }
+    ];
+
+    function mostrarSiguientePregunta() {
+      const quiz = document.getElementById("quiz-container");
+      if (preguntaActual >= preguntas.length || vidas === 0) {
+        quiz.innerHTML = vidas === 0
+          ? "<p>¡Has perdido todas las vidas! 😢 Inténtalo otra vez.</p><button onclick='reiniciarQuiz()'>Reintentar</button>"
+          : "<p>¡Quiz completado! 🎉</p>";
+        return;
+      }
+
+      const p = preguntas[preguntaActual];
+      quiz.innerHTML = `<p>${p.pregunta}</p>` + p.opciones.map((op, i) =>
+        `<button onclick="responder(${i === p.correcta})">${op}</button>`).join("");
+    }
+
+    function responder(correcta) {
+      if (!correcta) {
+        vidas--;
+        document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
+        mostrarMensaje("¡Ups! Te queda" + (vidas === 1 ? "" : "n") + ` ${vidas} vida${vidas === 1 ? "" : "s"} 😟`);
+      } else {
+        mostrarMensaje("¡Correcto! 🎉");
+      }
+      preguntaActual++;
+      mostrarSiguientePregunta();
+    }
+
+    function mostrarMensaje(texto) {
+      const mensaje = document.getElementById("mensaje-emocional");
+      mensaje.innerText = texto;
+      mensaje.style.opacity = 1;
+      setTimeout(() => mensaje.style.opacity = 0, 2000);
+    }
+
+    function reiniciarQuiz() {
+      vidas = 3;
+      preguntaActual = 0;
+      document.getElementById("vidas").innerText = "Vidas: ❤️❤️❤️";
+      mostrarSiguientePregunta();
+    }
+
+    window.onload = mostrarSiguientePregunta;
+  </script>
+</head>
+<body class="fondo-lila">
+
+  <header class="fondo-azul">
+    <h1>🎨 Mundo de Multimedia TICU</h1>
+    <p class="intro">Aquí aprenderás a crear imágenes, sonidos, videos y presentaciones. ¡Explora tu lado creativo con herramientas fáciles y divertidas!</p>
+  </header>
+
+  <!-- Herramientas multimedia -->
+  <section class="fondo-violeta">
+    <h2 class="subtitulo">🧩 Elige tu herramienta multimedia</h2>
+    <div class="grid-accesos">
+      <div class="acceso-cuadro">
+        <p>🎨 <strong>Canva</strong></p>
+        <p>Crea diseños, carteles y presentaciones con plantillas visuales.</p>
+        <a href="https://www.canva.com/es_mx/" target="_blank">Ir a Canva</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🎧 <strong>Audacity</strong></p>
+        <p>Edita y graba sonidos fácilmente.</p>
+        <a href="https://www.audacityteam.org/" target="_blank">Ir a Audacity</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🎬 <strong>CapCut</strong></p>
+        <p>Edita videos con efectos, música y transiciones.</p>
+        <a href="https://www.capcut.com/es-es/" target="_blank">Ir a CapCut</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🖼️ <strong>Photopea</strong></p>
+        <p>Edita imágenes como si usaras Photoshop, pero gratis y en línea.</p>
+        <a href="https://www.photopea.com/" target="_blank">Ir a Photopea</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>📽️ <strong>Powtoon</strong></p>
+        <p>Crea animaciones y presentaciones animadas.</p>
+        <a href="https://www.powtoon.com/" target="_blank">Ir a Powtoon</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>📊 <strong>PowerPoint</strong></p>
+        <p>Haz presentaciones con imágenes, texto y sonido.</p>
+        <a href="https://www.office.com/launch/powerpoint" target="_blank">Ir a PowerPoint</a>
+      </div>
+    </div>
+    <p class="intro">Haz clic en la herramienta que más te guste. ¡Explora, crea y comparte!</p>
+  </section>
+
+  <!-- Información previa -->
+  <section class="fondo-blanco">
+    <h2>📘 Aprende antes de crear</h2>
+    <ul>
+      <li><a href="https://www.youtube.com/watch?v=ZQZzYzZfZzY" target="_blank">🎨 ¿Qué es Canva? – Tutorial básico</a></li>
+      <li><a href="https://www.youtube.com/watch?v=QJZzYzZfQJY" target="_blank">🎧 ¿Cómo usar Audacity? – Guía para niños</a></li>
+      <li><a href="https://www.youtube.com/watch?v=VZzYzZfVZzY" target="_blank">🎬 ¿Qué es CapCut? – Edición de video fácil</a></li>
+      <li><a href="https://www.youtube.com/watch?v=AZzYzZfAZzY" target="_blank">🖼️ ¿Cómo funciona Photopea? – Edición de imágenes</a></li>
+      <li><a href="https://www.youtube.com/watch?v=NZzYzZfNZzY" target="_blank">📽️ ¿Qué es Powtoon? – Animaciones divertidas</a></li>
+      <li><a href="https://www.youtube.com/watch?v=TZzYzZfTZzY" target="_blank">📊 ¿Cómo usar PowerPoint? – Presentaciones creativas</a></li>
+    </ul>
+    <p class="intro">Consulta estos recursos antes de comenzar el quiz. ¡Tu creatividad está lista para despegar!</p>
+  </section>
+
+  <!-- Quiz TICU -->
+  <section class="fondo-amarillo">
+    <h2>❓ Quiz TICU: ¿Sabes de multimedia?</h2>
+    <p>Responde las preguntas. Tienes 3 vidas. Si las pierdes, ¡inténtalo otra vez!</p>
+    <div id="quiz-container"></div>
+    <p id="vidas">Vidas: ❤️❤️❤️</p>
+    <div id="mensaje-em

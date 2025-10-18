@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mundo de Videojuegos TICU</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script>
+    let vidas = 3;
+    let preguntaActual = 0;
+
+    const preguntas = [
+      { pregunta: "¿Qué es un videojuego?", opciones: ["Una película", "Una app para jugar", "Un robot", "Una red social"], correcta: 1 },
+      { pregunta: "¿Qué se necesita para crear un videojuego?", opciones: ["Un lápiz", "Un motor de juego", "Una cámara", "Un micrófono"], correcta: 1 },
+      { pregunta: "¿Qué es Scratch?", opciones: ["Un juego", "Una app de dibujo", "Una herramienta para crear videojuegos", "Una red social"], correcta: 2 },
+      { pregunta: "¿Qué hace un programador de videojuegos?", opciones: ["Dibuja personajes", "Escribe código", "Graba sonidos", "Juega todo el día"], correcta: 1 },
+      { pregunta: "¿Qué es un motor de juego?", opciones: ["Una parte de un carro", "Una herramienta para crear videojuegos", "Una consola", "Un joystick"], correcta: 1 },
+      { pregunta: "¿Qué tipo de arte se usa en videojuegos?", opciones: ["Arte digital", "Pintura al óleo", "Fotografía", "Escultura"], correcta: 0 },
+      { pregunta: "¿Qué es una mecánica de juego?", opciones: ["Una regla que define cómo se juega", "Una parte del joystick", "Un sonido", "Un dibujo"], correcta: 0 },
+      { pregunta: "¿Qué es Unity?", opciones: ["Una consola", "Un motor de videojuegos", "Un personaje", "Una red social"], correcta: 1 },
+      { pregunta: "¿Qué es un nivel en un videojuego?", opciones: ["Una canción", "Una etapa del juego", "Una contraseña", "Un botón"], correcta: 1 },
+      { pregunta: "¿Qué es Roblox Studio?", opciones: ["Un juego", "Una app para crear juegos", "Una red social", "Una consola"], correcta: 1 }
+    ];
+
+    function mostrarSiguientePregunta() {
+      const quiz = document.getElementById("quiz-container");
+      if (preguntaActual >= preguntas.length || vidas === 0) {
+        quiz.innerHTML = vidas === 0
+          ? "<p>¡Has perdido todas las vidas! 😢 Inténtalo otra vez.</p><button onclick='reiniciarQuiz()'>Reintentar</button>"
+          : "<p>¡Quiz completado! 🎉</p>";
+        return;
+      }
+
+      const p = preguntas[preguntaActual];
+      quiz.innerHTML = `<p>${p.pregunta}</p>` + p.opciones.map((op, i) =>
+        `<button onclick="responder(${i === p.correcta})">${op}</button>`).join("");
+    }
+
+    function responder(correcta) {
+      if (!correcta) {
+        vidas--;
+        document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
+        mostrarMensaje("¡Ups! Te queda" + (vidas === 1 ? "" : "n") + ` ${vidas} vida${vidas === 1 ? "" : "s"} 😟`);
+      } else {
+        mostrarMensaje("¡Correcto! 🎉");
+      }
+      preguntaActual++;
+      mostrarSiguientePregunta();
+    }
+
+    function mostrarMensaje(texto) {
+      const mensaje = document.getElementById("mensaje-emocional");
+      mensaje.innerText = texto;
+      mensaje.style.opacity = 1;
+      setTimeout(() => mensaje.style.opacity = 0, 2000);
+    }
+
+    function reiniciarQuiz() {
+      vidas = 3;
+      preguntaActual = 0;
+      document.getElementById("vidas").innerText = "Vidas: ❤️❤️❤️";
+      mostrarSiguientePregunta();
+    }
+
+    window.onload = mostrarSiguientePregunta;
+  </script>
+</head>
+<body class="fondo-lila">
+
+  <header class="fondo-azul">
+    <h1>🎮 Mundo de Videojuegos TICU</h1>
+    <p class="intro">Aquí aprenderás cómo se crearon los videojuegos, desde los clásicos hasta los modernos, y cómo puedes empezar a diseñar los tuyos. ¡Prepárate para jugar y crear!</p>
+  </header>
+
+  <!-- Juegos interactivos -->
+  <section class="fondo-violeta">
+    <h2 class="subtitulo">🕹️ Juega y explora videojuegos educativos</h2>
+    <div class="grid-accesos">
+      <div class="acceso-cuadro">
+        <p>🐱 <strong>Scratch</strong></p>
+        <p>Crea tus propios videojuegos con bloques visuales.</p>
+        <a href="https://scratch.mit.edu/" target="_blank">Explorar Scratch</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🧱 <strong>Roblox Studio</strong></p>
+        <p>Diseña mundos y juegos interactivos con Roblox.</p>
+        <a href="https://create.roblox.com/" target="_blank">Ir a Roblox Studio</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🎨 <strong>Educaplay</strong></p>
+        <p>Crea juegos educativos con mecánicas interactivas.</p>
+        <a href="https://es.educaplay.com/?lang=es" target="_blank">Usar Educaplay</a>
+      </div>
+      <div class="acceso-cuadro">
+        <p>🧠 <strong>Mobbyt</strong></p>
+        <p>Diseña videojuegos educativos fácilmente y compártelos.</p>
+        <a href="https://mobbyt.com/" target="_blank">Explorar Mobbyt</a>
+      </div>
+    </div>
+    <p class="intro">¡Haz clic en una herramienta y empieza a crear tu propio videojuego!</p>
+  </section>
+
+  <!-- Videos educativos -->
+  <section class="fondo-blanco">
+    <h2>📘 Aprende antes de crear</h2>
+    <ul>
+      <li><a href="https://www.youtube.com/watch?v=KRRfb-pSZy8" target="_blank">📼 History of Video Games (1972–1983) Part I</a> – Muestra cómo nacieron juegos como Space Invaders y Donkey Kong.</li>
+      <li><a href="https://www.youtube.com/watch?v=sEQON0sVBrk" target="_blank">🕹️ ¿Cómo surgieron los videojuegos? 12 datos curiosos</a> – Explica el origen de Pong, Magnavox Odyssey y el crash de los videojuegos.</li>
+      <li><a href="https://www.youtube.com/watch?v=Yz35mj1_gz8" target="_blank">🎮 Breve historia de los videojuegos</a> – Video corto que resume cómo los videojuegos han evolucionado.</li>
+      <li><a href="https://www.youtube.com/watch?v=TrYJ91q_BCc" target="_blank">👾 +20 JUEGOS INFANTILES PARA NIÑOS DE 5 A 10 AÑOS</a> – Muestra cómo los videojuegos se adaptan a cada edad.</li>
+      <li><a href="https://www.youtube.com/watch?v=P0VdL0LWtKU" target="_blank">🕹️ Game Stick Lite | LA CONSOLA PARA TV DE 20€</a> – Ejemplo moderno de cómo se distribuyen juegos retro hoy.</li>
+      <li><a href="https://www.youtube.com/watch?v=HZvidxSZof4" target="_blank">🎲 Juegos tradicionales populares en Latinoamérica</a> – Conecta los juegos clásicos con la evolución digital.</li>
+    </ul>
+    <p class="intro">¡Mira estos videos antes de comenzar el quiz y conviértete en un diseñador TICU!</p>
+  </section>
+
+  <!-- Quiz TICU -->
+  <section class="fondo-amarillo">
+    <h2>❓ Quiz TICU: ¿Sabes cómo se crean los videojuegos?</h2>
+    <p>Responde las preguntas. Tienes 3 vidas. Si las pierdes, ¡inténtalo otra vez!</p>
+    <div id="quiz-container"></div>
+    <p id="vidas">Vidas: ❤️❤️❤️</p>
+    <div id="mensaje-emocional" class="mensaje"></div>
+  </section>
+
+  <footer class="fondo-verde">
+    <p>&copy; 2025 Mundo TICU - Videojuegos Educativos</p>
+  </footer>
+
+</body>
+</html>
