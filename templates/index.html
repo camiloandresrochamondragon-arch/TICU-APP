@@ -1,120 +1,271 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mundo TIC Infantil</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TIC Platform — Formación Digital</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-  <!-- Música de fondo -->
-  <audio id="musicaFondo" autoplay loop>
-    <source src="{{ url_for('static', filename='audio/musica-infantil.mp3') }}" type="audio/mpeg">
-    Tu navegador no soporta audio.
-  </audio>
+<!-- ── TOPBAR ── -->
+<nav class="topbar">
+  <a href="/" class="topbar-logo">
+    <span>🚀</span> TIC Platform
+    <span class="logo-badge">BETA</span>
+  </a>
+  <div class="topbar-nav">
+    <a href="#mundos">Módulos</a>
+    <a href="#retos">Retos</a>
+    <a href="/herramientas">Herramientas</a>
+    {% if current_user.is_authenticated %}
+      <div class="user-chip">
+        <div class="avatar">{{ current_user.username[0].upper() }}</div>
+        {{ current_user.username }}
+      </div>
+      <a href="/dashboard" class="btn-primary">Mi panel</a>
+      <a href="/logout">Salir</a>
+    {% else %}
+      <a href="/login">Ingresar</a>
+      <a href="/registro" class="btn-primary">Empezar gratis</a>
+    {% endif %}
+  </div>
+</nav>
 
-  <!-- Pantalla de bienvenida -->
-  <header class="fondo-rosado">
-    <div class="logo">
-      <img src="{{ url_for('static', filename='img/logo-fc.png') }}" alt="Logo TICU" class="img-logo">
-    </div>
-    <h1>🌟 ¡Bienvenido a Mundo TIC! 🌟</h1>
-    <p class="intro">
-      Las TIC nos ayudan a aprender, crear y jugar.  
-      ¡Explora mundos digitales llenos de retos, historias y diversión! 🎮📱🌍
-    </p>
-
-    <div class="boton-navegacion">
-      <a href="#mundos" class="btn-mundo">🌍 Ir al Mundo TIC</a>
-    </div>
-    <section id="accesos-directos" class="fondo-menta">
-  <h2 class="subtitulo">🚪 Accede a tus mundos</h2>
-  <div class="grid-accesos">
-    <a href="/universo-tic" class="acceso-cuadro">🌍 Universo TIC</a>
-    <a href="/sala-retos-tic" class="acceso-cuadro">🎮 Sala de Retos TIC</a>
-    <a href="/herramientas-tic" class="acceso-cuadro">🧰 Herramientas TIC</a> <!-- NUEVO -->
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-badge">✦ Plataforma educativa de Tecnologías de la Información</div>
+  <h1>Aprende <span>TIC</span> con un camino<br>claro y estructurado</h1>
+  <p>
+    Desarrolla habilidades digitales reales a través de módulos progresivos,
+    retos prácticos y seguimiento personalizado. Para estudiantes, colegios y empresas.
+  </p>
+  <div class="hero-cta">
+    <a href="/registro" class="btn btn-solid">Comenzar gratis →</a>
+    <a href="#mundos" class="btn btn-ghost">Ver módulos</a>
   </div>
 </section>
 
-    <button onclick="activarAccesibilidad()">🧩 Modo accesible</button>
-  </header>
+<!-- ── STATS ── -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-num">10</span>
+    <span class="stat-label">Áreas de formación</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">100%</span>
+    <span class="stat-label">Progresión guiada</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">100+</span>
+    <span class="stat-label">Preguntas de quiz</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">🏅</span>
+    <span class="stat-label">Insignias y logros</span>
+  </div>
+</div>
 
-  <nav class="fondo-menta">
-    <ul class="nav-links">
-      <li><a href="#mundos">🌍 Mundos TIC</a></li>
-      <li><a href="#actividades">🎮 Actividades</a></li>
-      <li><a href="#comunidad">💬 Comunidad</a></li>
-      <li><a href="#logros">🏅 Logros</a></li>
-    </ul>
-  </nav>
+<!-- ── CONTENIDO PRINCIPAL ── -->
+<main class="main-container">
 
-  <main>
-    <section id="mundos" class="fondo-lila">
-      <h2>🌍 Explora los mundos TIC</h2>
-      <div class="mundos-grid">
-        <a href="/mundos/programacion" class="mundo-texto">🧠 <strong>Programación</strong><br><span>¡Crea tus propios juegos!</span></a>
-        <a href="/mundos/multimedia" class="mundo-texto">🎨 <strong>Multimedia</strong><br><span>Cuenta historias con sonidos e imágenes.</span></a>
-        <a href="/mundos/internet-seguro" class="mundo-texto">🛡️ <strong>Internet Seguro</strong><br><span>Navega con respeto y cuidado.</span></a>
+  <!-- QUÉ APRENDERÁS -->
+  <div class="section-header">
+    <h2>¿Qué aprenderás?</h2>
+    <p>Cada módulo combina teoría, práctica, juegos propios y evaluación continua</p>
+  </div>
+
+  <div class="skills-grid">
+    <div class="skill-pill"><span class="dot"></span>Fundamentos tecnológicos</div>
+    <div class="skill-pill"><span class="dot"></span>Lógica y algoritmos</div>
+    <div class="skill-pill"><span class="dot"></span>Seguridad digital</div>
+    <div class="skill-pill"><span class="dot"></span>Creación multimedia</div>
+    <div class="skill-pill"><span class="dot"></span>Inteligencia Artificial</div>
+    <div class="skill-pill"><span class="dot"></span>Robótica educativa</div>
+    <div class="skill-pill"><span class="dot"></span>Redes sociales seguras</div>
+    <div class="skill-pill"><span class="dot"></span>Realidad virtual</div>
+    <div class="skill-pill"><span class="dot"></span>Diseño de videojuegos</div>
+    <div class="skill-pill"><span class="dot"></span>Creación de contenido</div>
+  </div>
+
+  <!-- VIDEOS -->
+  <div class="section-header" style="margin-top:60px;">
+    <h2>¿Por qué aprender TIC?</h2>
+    <p>Mira estos videos y descubre el mundo digital que te espera</p>
+  </div>
+
+  <div class="video-grid video-section">
+    <div class="video-card">
+      <iframe src="https://www.youtube.com/embed/UKncFg0PyEk" allowfullscreen loading="lazy" title="Qué es la IA"></iframe>
+      <div class="video-card-info">
+        <strong>¿Qué es la Inteligencia Artificial?</strong>
+        <p>Explicación para niños y jóvenes</p>
       </div>
-    </section>
-
-    <section id="actividades" class="fondo-amarillo">
-      <h2>🎮 Actividades divertidas</h2>
-      <p>¡Juegos, videos y retos para ganar medallas! 🏅</p>
-      <div class="actividades">
-        <button onclick="mostrarMensaje('¡Buen trabajo!')">Juegos Interactivos</button>
-        <button onclick="mostrarMensaje('¡Sigue explorando!')">Videos TIC</button>
-        <button onclick="mostrarMensaje('¡Reto completado!')">Retos Semanales</button>
+    </div>
+    <div class="video-card">
+      <iframe src="https://www.youtube.com/embed/65Ed9c8ucaY" allowfullscreen loading="lazy" title="Qué es un bucle"></iframe>
+      <div class="video-card-info">
+        <strong>¿Qué es la programación?</strong>
+        <p>Conceptos básicos de forma divertida</p>
       </div>
-      <div id="mensaje-emocional" class="mensaje"></div>
-    </section>
+    </div>
+    <div class="video-card">
+      <iframe src="https://www.youtube.com/embed/ksYTGkwk2E4" allowfullscreen loading="lazy" title="Internet seguro"></iframe>
+      <div class="video-card-info">
+        <strong>Uso seguro del internet</strong>
+        <p>Aprende a navegar con seguridad</p>
+      </div>
+    </div>
+  </div>
 
-    <section id="comunidad" class="fondo-celeste">
-      <h2>💬 ¿Tienes preguntas?</h2>
-      <form>
-        <input type="text" placeholder="Escribe tu pregunta aquí">
-        <button type="submit">Enviar</button>
-      </form>
+  <!-- MÓDULOS -->
+  <div id="mundos" class="section-header">
+    <h2>Áreas de formación</h2>
+    <p>Avanza nivel a nivel — cada módulo desbloquea el siguiente al completarlo</p>
+  </div>
 
-      <p class="negrita-texto2">
-        <strong>¡Tú y NAVITEL son el equipo ideal!</strong><br>
-        Estoy aquí para ayudarte. ¿Con qué necesitas ayuda?
+  <div class="modules-grid">
+
+    <a href="/mundos/programacion" class="module-card" style="--card-color:#4f8ef7;">
+      <span class="module-icon">💻</span>
+      <h3>Programación</h3>
+      <p>Lógica computacional, algoritmos y desarrollo de soluciones digitales.</p>
+      <div class="module-meta">
+        <span class="tag">Nivel 1</span>
+        <span class="tag">Disponible</span>
+      </div>
+    </a>
+
+    <a href="/mundos/multimedia" class="module-card" style="--card-color:#a855f7;">
+      <span class="module-icon">🎨</span>
+      <h3>Multimedia</h3>
+      <p>Diseño, edición de contenido y creación de piezas visuales digitales.</p>
+      <div class="module-meta">
+        <span class="tag">Nivel 2</span>
+        <span class="tag">Requiere Nivel 1</span>
+      </div>
+    </a>
+
+    <a href="/mundos/internet-seguro" class="module-card" style="--card-color:#22c55e;">
+      <span class="module-icon">🛡️</span>
+      <h3>Internet Seguro</h3>
+      <p>Protección de datos, navegación segura y privacidad en línea.</p>
+      <div class="module-meta">
+        <span class="tag">Nivel 3</span>
+        <span class="tag">Requiere Nivel 2</span>
+      </div>
+    </a>
+
+    <a href="/mundos/ciberseguridad" class="module-card" style="--card-color:#ef4444;">
+      <span class="module-icon">🔐</span>
+      <h3>Ciberseguridad</h3>
+      <p>Amenazas digitales, hacking ético y defensa de sistemas.</p>
+      <div class="module-meta">
+        <span class="tag">Nivel 4</span>
+        <span class="tag">Requiere Nivel 3</span>
+      </div>
+    </a>
+
+    <a href="/mundos/robotica" class="module-card" style="--card-color:#f97316;">
+      <span class="module-icon">🤖</span>
+      <h3>Robótica</h3>
+      <p>Máquinas programables, sensores y automatización de procesos.</p>
+      <div class="module-meta">
+        <span class="tag">Nivel 5</span>
+        <span class="tag">Requiere Nivel 4</span>
+      </div>
+    </a>
+
+    <a href="/mundos/inteligencia-artificial" class="module-card" style="--card-color:#8b5cf6;">
+      <span class="module-icon">🧠</span>
+      <h3>Inteligencia Artificial</h3>
+      <p>IA, algoritmos de aprendizaje automático y ética digital.</p>
+      <div class="module-meta">
+        <span class="tag">Nivel 6</span>
+        <span class="tag">Requiere Nivel 5</span>
+      </div>
+    </a>
+
+    <a href="/mundos/videojuegos" class="module-card" style="--card-color:#ec4899;">
+      <span class="module-icon">🎮</span>
+      <h3>Videojuegos</h3>
+      <p>Diseño, mecánicas y creación de videojuegos educativos.</p>
+      <div class="module-meta">
+        <span class="tag">Nivel 7</span>
+        <span class="tag">Requiere Nivel 6</span>
+      </div>
+    </a>
+
+    <a href="/mundos/redes-sociales" class="module-card" style="--card-color:#06b6d4;">
+      <span class="module-icon">📱</span>
+      <h3>Redes Sociales</h3>
+      <p>Comunicación digital responsable y ciudadanía en línea.</p>
+      <div class="module-meta">
+        <span class="tag">Nivel 8</span>
+        <span class="tag">Requiere Nivel 7</span>
+      </div>
+    </a>
+
+    <a href="/mundos/realidad-virtual" class="module-card" style="--card-color:#14b8a6;">
+      <span class="module-icon">🕶️</span>
+      <h3>Realidad Virtual</h3>
+      <p>Simulaciones inmersivas, VR educativa y entornos 360°.</p>
+      <div class="module-meta">
+        <span class="tag">Nivel 9</span>
+        <span class="tag">Requiere Nivel 8</span>
+      </div>
+    </a>
+
+    <a href="/mundos/creacion-contenido" class="module-card" style="--card-color:#f59e0b;">
+      <span class="module-icon">📸</span>
+      <h3>Creación de Contenido</h3>
+      <p>Podcasts, videos, diseño y publicaciones digitales.</p>
+      <div class="module-meta">
+        <span class="tag">Nivel 10</span>
+        <span class="tag">Requiere Nivel 9</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- SALA DE RETOS -->
+  <div id="retos" class="retos-banner">
+    <div class="retos-info">
+      <h2>🎮 Sala de Retos TIC</h2>
+      <p>
+        Aplica lo aprendido en desafíos reales, juegos propios y actividades interactivas.
+        Cada reto refuerza tus habilidades de forma dinámica.
       </p>
+    </div>
+    <a href="/retos" class="btn btn-solid">Explorar retos →</a>
+  </div>
 
-      <div class="mascota-container">
-        <img src="{{ url_for('static', filename='img/mascote-fc.png') }}" alt="Mascota TICU" class="mascota">
-        <p class="mascota-texto">🐧 <strong>TICU</strong><br><span>¡Hola! Soy tu guía en este mundo digital.</span></p>
-      </div>
-    </section>
+  <!-- PROGRESO -->
+  <div id="progreso" class="section-header">
+    <h2>Seguimiento de progreso</h2>
+    <p>
+      {% if current_user.is_authenticated %}
+        Tu avance se guarda automáticamente. Continúa donde lo dejaste.
+      {% else %}
+        <a href="/login" style="color:var(--accent);">Inicia sesión</a> para guardar tu progreso y obtener insignias.
+      {% endif %}
+    </p>
+  </div>
 
-    <section id="logros" class="fondo-blanco">
-      <h2>🏅 Tus logros</h2>
-      <div class="medallas">
-        <div class="medalla desbloqueada">Nivel 1: Explorador TIC</div>
-        <div class="medalla bloqueada">Nivel 2: Creador Multimedia</div>
-        <div class="medalla bloqueada">Nivel 3: Navegante Seguro</div>
-      </div>
-    </section>
-  </main>
+  <div class="progress-levels">
+    <div class="level-chip done">✓ Nivel 1 — Programación</div>
+    <div class="level-chip active">→ Nivel 2 — Multimedia</div>
+    <div class="level-chip locked">🔒 Nivel 3 — Internet Seguro</div>
+    <div class="level-chip locked">🔒 Nivel 4 — Ciberseguridad</div>
+    <div class="level-chip locked">🔒 Nivel 5 — Robótica</div>
+    <div class="level-chip locked">🔒 Niveles 6-10...</div>
+  </div>
 
-  <footer class="fondo-menta">
-    <p>&copy; 2025 Mundo TIC Infantil</p>
-  </footer>
+</main>
 
-  <script>
-    function mostrarMensaje(texto) {
-      const mensaje = document.getElementById("mensaje-emocional");
-      mensaje.textContent = texto;
-      mensaje.style.opacity = 1;
-      setTimeout(() => mensaje.style.opacity = 0, 3000);
-    }
+<footer>
+  <p>© 2025 TIC Platform — Formación Digital Profesional</p>
+</footer>
 
-    function activarAccesibilidad() {
-      document.body.style.fontSize = "1.4em";
-      document.body.style.backgroundColor = "#ffffff";
-      document.body.style.color = "#000000";
-    }
-  </script>
 </body>
 </html>

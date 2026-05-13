@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear cuenta — TIC Platform</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="auth-page">
+
+  <!-- LADO IZQUIERDO — INFO -->
+  <div class="auth-side">
+    <div class="auth-side-logo">🚀 TIC Platform</div>
+
+    <h2>Empieza hoy,<br>gratis y sin límites</h2>
+    <p>
+      Crea tu cuenta y accede al primer módulo de inmediato.
+      Tu progreso se guarda automáticamente para que continúes cuando quieras.
+    </p>
+
+    <ul class="auth-features">
+      <li>
+        <span class="check">✓</span>
+        Sin tarjeta de crédito requerida
+      </li>
+      <li>
+        <span class="check">✓</span>
+        Acceso inmediato al Módulo 1
+      </li>
+      <li>
+        <span class="check">✓</span>
+        Progresión desbloqueada al completar
+      </li>
+      <li>
+        <span class="check">✓</span>
+        Panel de progreso personalizado
+      </li>
+    </ul>
+  </div>
+
+  <!-- LADO DERECHO — FORM -->
+  <div class="auth-form-wrap">
+    <div class="auth-form-box">
+      <h1>Crea tu cuenta</h1>
+      <p class="auth-subtitle">Únete a la plataforma de formación TIC</p>
+
+      <form method="POST">
+        <div class="form-group">
+          <label for="username">Nombre de usuario</label>
+          <input type="text" name="username" id="username"
+                 placeholder="ej: ana_garcia" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input type="password" name="password" id="password"
+                 placeholder="Mínimo 8 caracteres" required autocomplete="new-password">
+        </div>
+
+        <button type="submit" class="btn-submit">Crear cuenta →</button>
+      </form>
+
+      <div class="auth-switch">
+        ¿Ya tienes cuenta?
+        <a href="/login">Iniciar sesión</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

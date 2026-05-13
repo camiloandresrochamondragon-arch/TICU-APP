@@ -1,126 +1,61 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mundo de Ciberseguridad TICU</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-  <script>
-    let vidas = 3;
-    let preguntaActual = 0;
+{% extends "mundo_base.html" %}
 
-    const preguntas = [
-      { pregunta: "¿Qué es la ciberseguridad?", opciones: ["Un videojuego", "Una forma de proteger datos digitales", "Una red social", "Una app de dibujo"], correcta: 1 },
-      { pregunta: "¿Qué es una contraseña segura?", opciones: ["1234", "Mi nombre", "Una combinación secreta", "Mi cumpleaños"], correcta: 2 },
-      { pregunta: "¿Qué es el phishing?", opciones: ["Un juego", "Un ataque para robar información", "Una app de música", "Un tipo de robot"], correcta: 1 },
-      { pregunta: "¿Qué debemos hacer si recibimos un mensaje sospechoso?", opciones: ["Responder", "Ignorar", "Compartirlo", "No abrirlo y avisar"], correcta: 3 },
-      { pregunta: "¿Qué es el malware?", opciones: ["Un tipo de software dañino", "Una red social", "Un videojuego", "Una app educativa"], correcta: 0 },
-      { pregunta: "¿Qué es la huella digital?", opciones: ["Una marca en la pantalla", "La información que dejamos en internet", "Una app de dibujo", "Un juego de detectives"], correcta: 1 },
-      { pregunta: "¿Qué es un hacker ético?", opciones: ["Un delincuente", "Un programador que ayuda a proteger sistemas", "Un jugador", "Un artista digital"], correcta: 1 },
-      { pregunta: "¿Qué debemos revisar antes de descargar una app?", opciones: ["Su color", "Su nombre", "Su origen y permisos", "Su icono"], correcta: 2 },
-      { pregunta: "¿Qué es un antivirus?", opciones: ["Un robot", "Un programa que protege tu dispositivo", "Una red social", "Un videojuego"], correcta: 1 },
-      { pregunta: "¿Qué es la privacidad digital?", opciones: ["Guardar secretos", "Controlar quién ve tu información", "Apagar el celular", "Jugar sin conexión"], correcta: 1 }
-    ];
-
-    function mostrarSiguientePregunta() {
-      const quiz = document.getElementById("quiz-container");
-      if (preguntaActual >= preguntas.length || vidas === 0) {
-        quiz.innerHTML = vidas === 0
-          ? "<p>¡Has perdido todas las vidas! 😢 Inténtalo otra vez.</p><button onclick='reiniciarQuiz()'>Reintentar</button>"
-          : "<p>¡Quiz completado! 🎉</p>";
-        return;
-      }
-
-      const p = preguntas[preguntaActual];
-      quiz.innerHTML = `<p>${p.pregunta}</p>` + p.opciones.map((op, i) =>
-        `<button onclick="responder(${i === p.correcta})">${op}</button>`).join("");
-    }
-
-    function responder(correcta) {
-      if (!correcta) {
-        vidas--;
-        document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
-        mostrarMensaje("¡Ups! Te queda" + (vidas === 1 ? "" : "n") + ` ${vidas} vida${vidas === 1 ? "" : "s"} 😟`);
-      } else {
-        mostrarMensaje("¡Correcto! 🎉");
-      }
-      preguntaActual++;
-      mostrarSiguientePregunta();
-    }
-
-    function mostrarMensaje(texto) {
-      const mensaje = document.getElementById("mensaje-emocional");
-      mensaje.innerText = texto;
-      mensaje.style.opacity = 1;
-      setTimeout(() => mensaje.style.opacity = 0, 2000);
-    }
-
-    function reiniciarQuiz() {
-      vidas = 3;
-      preguntaActual = 0;
-      document.getElementById("vidas").innerText = "Vidas: ❤️❤️❤️";
-      mostrarSiguientePregunta();
-    }
-
-    window.onload = mostrarSiguientePregunta;
-  </script>
-</head>
-<body class="fondo-lila">
-
-  <header class="fondo-azul">
-    <h1>🔐 Mundo de Ciberseguridad TICU</h1>
-    <p class="intro">Aquí aprenderás a proteger tus datos, reconocer amenazas digitales y navegar con seguridad. ¡Prepárate para convertirte en un defensor TICU!</p>
-  </header>
-
-  <!-- Juegos interactivos -->
-  <section class="fondo-violeta">
-    <h2 class="subtitulo">🎮 Juega y aprende sobre ciberseguridad</h2>
-    <div class="grid-accesos">
-      <div class="acceso-cuadro">
-        <p>🧠 <strong>Cyberscouts – INCIBE</strong></p>
-        <p>Minijuegos para aprender seguridad digital desde los 6 años.</p>
-        <a href="https://www.incibe.es/menores/juegos/cyberscouts" target="_blank">Jugar Cyberscouts</a>
-      </div>
-      <div class="acceso-cuadro">
-        <p>🕹️ <strong>WeLiveSecurity</strong></p>
-        <p>Juegos para aprender ciberseguridad desde lo básico hasta retos avanzados.</p>
-        <a href="https://www.welivesecurity.com/es/concientizacion/juegos-aprender-ciberseguridad/" target="_blank">Explorar juegos</a>
-      </div>
-      <div class="acceso-cuadro">
-        <p>🎯 <strong>Top 2025 – Ubunlog</strong></p>
-        <p>Selección de juegos gratuitos para jóvenes y docentes.</p>
-        <a href="https://ubunlog.com/top-2025-juegos-ciberseguridad/" target="_blank">Ver el Top</a>
-      </div>
+{% block recursos %}
+  <div class="resource-card">
+    <div class="resource-icon">🧠</div>
+    <div class="resource-info">
+      <strong>Cyberscouts – INCIBE</strong>
+      <p>Minijuegos de seguridad digital desde los 6 años.</p>
     </div>
-    <p class="intro">¡Haz clic en un juego y conviértete en un protector digital!</p>
-  </section>
+    <a href="https://www.incibe.es/menores/juegos/cyberscouts" target="_blank" class="resource-link">Abrir →</a>
+  </div>
+  <div class="resource-card">
+    <div class="resource-icon">🕹️</div>
+    <div class="resource-info">
+      <strong>WeLiveSecurity</strong>
+      <p>Juegos para aprender ciberseguridad desde lo básico.</p>
+    </div>
+    <a href="https://www.welivesecurity.com/es/concientizacion/juegos-aprender-ciberseguridad/" target="_blank" class="resource-link">Abrir →</a>
+  </div>
+  <div class="resource-card">
+    <div class="resource-icon">🎯</div>
+    <div class="resource-info">
+      <strong>Top Juegos 2025</strong>
+      <p>Selección de juegos gratuitos para jóvenes y docentes.</p>
+    </div>
+    <a href="https://ubunlog.com/top-2025-juegos-ciberseguridad/" target="_blank" class="resource-link">Abrir →</a>
+  </div>
+{% endblock %}
 
-  <!-- Videos educativos -->
-  <section class="fondo-blanco">
-    <h2>📘 Aprende antes de jugar</h2>
-    <ul>
-      <li><a href="https://www.youtube.com/watch?v=fiv71yqyVz0" target="_blank">🔐 CONSEJOS de CIBERSEGURIDAD para NIÑOS y ADOLESCENTES</a> – Tips visuales y prácticos para protegerse en línea.</li>
-      <li><a href="https://www.youtube.com/watch?v=gzES0MuWqHE" target="_blank">🧠 Aprende CIBERSEGURIDAD Desde Cero</a> – Curso introductorio con ejemplos reales y consejos profesionales.</li>
-      <li><a href="https://www.youtube.com/watch?v=tBObvkx_nOg" target="_blank">📱 Uso responsable de la tecnología para niños</a> – Enseña reglas básicas para navegar con seguridad.</li>
-      <li><a href="https://www.youtube.com/watch?v=rHDTJQKW2y8" target="_blank">🔒 Privacidad online para niños</a> – Explica cómo proteger la información personal.</li>
-      <li><a href="https://www.youtube.com/watch?v=G46KyZTxPE4" target="_blank">🛡️ Seguridad en línea para niños</a> – Muestra los principales riesgos y cómo evitarlos.</li>
-      <li><a href="https://www.youtube.com/watch?v=GNw9KPeYSzM" target="_blank">🎙️ Un podcast en grande: Internet y la ciberseguridad</a> – Conversación accesible sobre redes, acoso y protección digital.</li>
-    </ul>
-    <p class="intro">¡Mira estos videos antes de comenzar el quiz y conviértete en un defensor TICU!</p>
-  </section>
+{% block aprende %}
+  <a class="aprende-item" href="https://www.youtube.com/watch?v=fiv71yqyVz0" target="_blank">
+    <span class="aprende-tag">VIDEO</span> Consejos de ciberseguridad para niños y adolescentes
+  </a>
+  <a class="aprende-item" href="https://www.youtube.com/watch?v=gzES0MuWqHE" target="_blank">
+    <span class="aprende-tag">VIDEO</span> Aprende ciberseguridad desde cero
+  </a>
+  <a class="aprende-item" href="https://www.youtube.com/watch?v=rHDTJQKW2y8" target="_blank">
+    <span class="aprende-tag">VIDEO</span> Privacidad online para niños
+  </a>
+  <a class="aprende-item" href="https://www.youtube.com/watch?v=G46KyZTxPE4" target="_blank">
+    <span class="aprende-tag">VIDEO</span> Seguridad en línea — principales riesgos
+  </a>
+  <a class="aprende-item" href="https://www.youtube.com/watch?v=GNw9KPeYSzM" target="_blank">
+    <span class="aprende-tag">VIDEO</span> Internet y la ciberseguridad — podcast accesible
+  </a>
+{% endblock %}
 
-  <!-- Quiz TICU -->
-  <section class="fondo-amarillo">
-    <h2>❓ Quiz TICU: ¿Sabes proteger tus datos?</h2>
-    <p>Responde las preguntas. Tienes 3 vidas. Si las pierdes, ¡inténtalo otra vez!</p>
-    <div id="quiz-container"></div>
-    <p id="vidas">Vidas: ❤️❤️❤️</p>
-    <div id="mensaje-emocional" class="mensaje"></div>
-  </section>
-
-  <footer class="fondo-verde">
-    <p>&copy; 2025 Mundo TICU - Ciberseguridad Infantil y Juvenil</p>
-  </footer>
-
-</body>
-</html>
+{% block quiz_preguntas %}
+[
+  { "pregunta": "¿Qué es la ciberseguridad?", "opciones": ["Un videojuego", "Una forma de proteger datos digitales", "Una red social", "Una app de dibujo"], "correcta": 1 },
+  { "pregunta": "¿Qué es una contraseña segura?", "opciones": ["1234", "Mi nombre", "Una combinación secreta", "Mi cumpleaños"], "correcta": 2 },
+  { "pregunta": "¿Qué es el phishing?", "opciones": ["Un juego", "Un ataque para robar información", "Una app de música", "Un tipo de robot"], "correcta": 1 },
+  { "pregunta": "¿Qué debemos hacer si recibimos un mensaje sospechoso?", "opciones": ["Responder", "Ignorar", "Compartirlo", "No abrirlo y avisar"], "correcta": 3 },
+  { "pregunta": "¿Qué es el malware?", "opciones": ["Un tipo de software dañino", "Una red social", "Un videojuego", "Una app educativa"], "correcta": 0 },
+  { "pregunta": "¿Qué es la huella digital?", "opciones": ["Una marca en la pantalla", "La información que dejamos en internet", "Una app de dibujo", "Un juego de detectives"], "correcta": 1 },
+  { "pregunta": "¿Qué es un hacker ético?", "opciones": ["Un delincuente", "Un programador que ayuda a proteger sistemas", "Un jugador", "Un artista digital"], "correcta": 1 },
+  { "pregunta": "¿Qué debemos revisar antes de descargar una app?", "opciones": ["Su color", "Su nombre", "Su origen y permisos", "Su icono"], "correcta": 2 },
+  { "pregunta": "¿Qué es un antivirus?", "opciones": ["Un robot", "Un programa que protege tu dispositivo", "Una red social", "Un videojuego"], "correcta": 1 },
+  { "pregunta": "¿Qué es la privacidad digital?", "opciones": ["Guardar secretos", "Controlar quién ve tu información", "Apagar el celular", "Jugar sin conexión"], "correcta": 1 }
+]
+{% endblock %}

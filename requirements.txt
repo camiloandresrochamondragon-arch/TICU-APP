@@ -1,2 +1,9 @@
 flask
 gunicorn
+flask
+flask-sqlalchemy
+flask-login
+werkzeug
+gunicorn
+psycopg2-binary
+ 

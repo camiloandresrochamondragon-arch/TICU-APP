@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Panel — TIC Platform</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='ticu-mascota.css') }}">
+</head>
+<body>
+
+<nav class="topbar">
+  <a href="/" class="topbar-logo">
+    <span>🚀</span> TIC Platform
+    <span class="logo-badge">BETA</span>
+  </a>
+  <div class="topbar-nav">
+    <a href="/retos">Módulos</a>
+    <a href="/herramientas">Herramientas</a>
+    <div class="user-chip">
+      <div class="avatar">{{ current_user.username[0].upper() }}</div>
+      {{ current_user.username }}
+    </div>
+    <a href="/logout">Salir</a>
+  </div>
+</nav>
+
+<div class="dash-layout">
+
+  <aside class="dash-sidebar">
+    <span class="sidebar-label">General</span>
+    <a href="/dashboard" class="sidebar-link active"><span class="icon">📊</span> Mi panel</a>
+    <a href="/" class="sidebar-link"><span class="icon">🏠</span> Inicio</a>
+    <a href="/retos" class="sidebar-link"><span class="icon">🎮</span> Sala de retos</a>
+    <a href="/herramientas" class="sidebar-link"><span class="icon">🧰</span> Herramientas</a>
+
+    <span class="sidebar-label">Módulos</span>
+    {% if estado %}
+      {% for e in estado %}
+        <a href="/mundos/{{ e.modulo.slug }}" class="sidebar-link">
+          <span class="icon">{{ e.modulo.icono }}</span>
+          {{ e.modulo.nombre }}
+          {% if e.completado %}<span style="margin-left:auto;color:var(--green);font-size:.7rem;">✓</span>{% endif %}
+        </a>
+      {% endfor %}
+    {% endif %}
+
+    <span class="sidebar-label">Cuenta</span>
+    <a href="/logout" class="sidebar-link"><span class="icon">↩</span> Cerrar sesión</a>
+  </aside>
+
+  <main class="dash-main">
+
+    <!-- BIENVENIDA + TICU -->
+    <div class="dash-welcome" style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;">
+      <div style="flex:1;">
+        <h1>Hola, {{ current_user.username }} 👋</h1>
+        <p>
+          {% if completados == 0 %}¡Bienvenido! Empieza con el Nivel 1 — Programación.
+          {% elif completados == total %}¡Completaste todos los módulos! ¡Eres un Maestro TIC! 🏆
+          {% else %}Llevas {{ completados }} de {{ total }} módulos. ¡Sigue así!{% endif %}
+        </p>
+      </div>
+      <div id="ticu-dashboard"></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="dash-stats">
+      <div class="dash-stat">
+        <div class="stat-label">Completados</div>
+        <div class="stat-val green">{{ completados }}</div>
+      </div>
+      <div class="dash-stat">
+        <div class="stat-label">Total módulos</div>
+        <div class="stat-val">{{ total }}</div>
+      </div>
+      <div class="dash-stat">
+        <div class="stat-label">Progreso</div>
+        <div class="stat-val accent">{{ pct }}%</div>
+      </div>
+      <div class="dash-stat">
+        <div class="stat-label">Insignias</div>
+        <div class="stat-val" style="color:var(--yellow);">{{ logros_usuario|length }}</div>
+      </div>
+    </div>
+
+    <!-- BARRA PROGRESO GENERAL -->
+    <div style="margin-bottom:36px;">
+      <div style="display:flex;justify-content:space-between;font-size:.83rem;margin-bottom:8px;">
+        <span style="font-weight:600;">Progreso general</span>
+        <span style="color:var(--muted);">{{ pct }}%</span>
+      </div>
+      <div class="prog-track" style="height:10px;">
+        <div class="prog-fill {% if pct == 100 %}green{% endif %}" style="width:{{ pct }}%"></div>
+      </div>
+    </div>
+
+    <!-- PROGRESO POR MÓDULO -->
+    <p class="dash-section-title">📈 Progreso por módulo</p>
+    {% for e in estado %}
+      <div class="prog-item">
+        <div class="prog-item-header">
+          <span>{{ e.modulo.icono }} {{ e.modulo.nombre }}</span>
+          <span>
+            {% if e.completado %}✓ {{ e.mejor_puntaje }}/{{ e.modulo.total_preguntas }}
+            {% elif e.puede_acceder %}Disponible
+            {% else %}🔒 Bloqueado{% endif %}
+          </span>
+        </div>
+        <div class="prog-track">
+          <div class="prog-fill {% if e.completado %}green{% endif %}"
+               style="width:{% if e.completado %}100{% else %}0{% endif %}%"></div>
+        </div>
+      </div>
+    {% endfor %}
+
+    <!-- INSIGNIAS -->
+    <p class="dash-section-title">🏅 Mis insignias</p>
+    <div class="logros-grid">
+      {% for logro in todos_logros %}
+        {% set obtenido = logro.id in logros_ids %}
+        <div class="logro-card {% if obtenido %}obtenido{% else %}bloqueado{% endif %}">
+          <span class="logro-icon">{{ logro.icono }}</span>
+          <span class="logro-name">{{ logro.nombre }}</span>
+          {% if obtenido %}
+            {% for ul in logros_usuario %}
+              {% if ul.logro_id == logro.id %}
+                <span class="logro-date">{{ ul.fecha.strftime('%d/%m/%Y') }}</span>
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <span class="logro-date">Bloqueado</span>
+          {% endif %}
+        </div>
+      {% else %}
+        <p style="color:var(--muted);font-size:.875rem;">Completa módulos para obtener insignias.</p>
+      {% endfor %}
+    </div>
+
+    <!-- MÓDULOS -->
+    <p class="dash-section-title">🚀 Continuar aprendizaje</p>
+    <div class="modules-grid">
+      {% for e in estado %}
+        <a href="{% if e.puede_acceder %}/mundos/{{ e.modulo.slug }}{% else %}#{% endif %}"
+           class="module-card {% if not e.puede_acceder %}locked{% endif %}"
+           style="--card-color:{% if e.completado %}#22c55e{% elif e.puede_acceder %}#4f8ef7{% else %}#4f8ef7{% endif %};">
+          <span class="module-icon">{{ e.modulo.icono }}</span>
+          <h3>{{ e.modulo.nombre }}</h3>
+          <p>{{ e.modulo.descripcion }}</p>
+          <div class="module-meta">
+            <span class="tag">Nivel {{ e.modulo.orden }}</span>
+            {% if e.completado %}<span class="tag done">✓ {{ e.mejor_puntaje }}/10</span>
+            {% elif e.puede_acceder %}<span class="tag">→ Disponible</span>
+            {% else %}<span class="tag">🔒 Bloqueado</span>{% endif %}
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+
+  </main>
+</div>
+
+<footer>
+  <p>© 2025 TIC Platform — Formación Digital Profesional</p>
+</footer>
+
+<script src="{{ url_for('static', filename='ticu-mascota.js') }}"></script>
+<script>
+  {% if completados == 0 %}
+    TICU.render('ticu-dashboard', 'idle', '¡Empieza el Nivel 1! 💪', 'sm');
+  {% elif completados == total %}
+    TICU.render('ticu-dashboard', 'celebrate', '¡Maestro TIC! 🏆', 'sm');
+  {% else %}
+    TICU.render('ticu-dashboard', 'happy', '¡Vas muy bien! 🎉', 'sm');
+  {% endif %}
+</script>
+
+</body>
+</html>

@@ -1,148 +1,295 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Herramientas TIC</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Herramientas TIC — TIC Platform</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='ticu-mascota.css') }}">
   <style>
-    .cuadro-herramienta {
-      background-color: #fff0f5;
-      border: 2px dashed #dda0dd;
-      border-radius: 15px;
-      padding: 20px;
-      margin: 20px;
+    .herr-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+    .herr-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
       cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-      position: relative;
+      transition: all .25s;
     }
-    .cuadro-herramienta:hover {
-      background-color: #ffe4e1;
-      transform: scale(1.02);
+    .herr-card:hover { border-color: rgba(79,142,247,.4); transform: translateY(-3px); }
+    .herr-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
     }
-    .contenido-herramienta {
+    .herr-icon-wrap {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      flex-shrink: 0;
+    }
+    .herr-header h2 {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .herr-header p {
+      color: var(--muted);
+      font-size: .8rem;
+      margin: 3px 0 0;
+    }
+    .herr-chevron {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 1rem;
+      transition: transform .3s;
+    }
+    .herr-card.open .herr-chevron { transform: rotate(180deg); }
+    .herr-body {
       display: none;
-      margin-top: 10px;
-      padding: 10px;
-      border-top: 1px solid #ccc;
-      font-size: 1em;
-      animation: aparecer 0.5s ease;
+      padding: 0 20px 20px;
+      border-top: 1px solid var(--border);
+      animation: herr-open .3s ease;
     }
-    @keyframes aparecer {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes herr-open {
+      from { opacity:0; transform:translateY(-8px); }
+      to   { opacity:1; transform:translateY(0); }
     }
-    .cuadro-herramienta h2 {
-      font-size: 1.5em;
-      color: #6a5acd;
-      margin-bottom: 0;
+    .herr-body p {
+      color: var(--muted);
+      font-size: .875rem;
+      margin: 14px 0 12px;
     }
-    .cuadro-herramienta a {
-      display: block;
-      margin: 5px 0;
-      padding: 8px;
-      background-color: #add8e6;
-      color: #333;
-      border-radius: 10px;
+    .herr-links { display: flex; flex-direction: column; gap: 8px; }
+    .herr-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
       text-decoration: none;
-      font-weight: bold;
+      color: var(--text);
+      font-size: .85rem;
+      font-weight: 500;
+      transition: all .2s;
     }
-    .cuadro-herramienta a:hover {
-      background-color: #b0e0e6;
-    }
-    .muneco {
-      position: absolute;
-      top: -40px;
-      right: -10px;
-      width: 60px;
-    }
-    .mensaje-ticu {
-      margin-top: 10px;
-      font-weight: bold;
-      color: #ff69b4;
+    .herr-link:hover { border-color: var(--accent); color: var(--accent); }
+    .herr-ticu-msg {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: rgba(79,142,247,.06);
+      border: 1px solid rgba(79,142,247,.2);
+      border-radius: var(--radius-sm);
+      font-size: .82rem;
+      color: var(--accent);
+      font-weight: 500;
     }
   </style>
-  <script>
-    function toggleContenido(id) {
-      const contenido = document.getElementById(id);
-      contenido.style.display = contenido.style.display === "block" ? "none" : "block";
-    }
-  </script>
 </head>
-<body class="fondo-celeste">
+<body>
 
-  <header class="fondo-rosado">
-    <h1>🧰 Herramientas TIC</h1>
-    <p class="intro">Explora estas herramientas digitales básicas que usamos para aprender, crear y comunicar.</p>
-  </header>
+<!-- TOPBAR -->
+<nav class="topbar">
+  <a href="/" class="topbar-logo">
+    <span>🚀</span> TIC Platform
+    <span class="logo-badge">BETA</span>
+  </a>
+  <div class="topbar-nav">
+    <a href="/">Inicio</a>
+    <a href="/retos">Módulos</a>
+    {% if current_user.is_authenticated %}
+      <div class="user-chip">
+        <div class="avatar">{{ current_user.username[0].upper() }}</div>
+        {{ current_user.username }}
+      </div>
+      <a href="/dashboard" class="btn-primary">Mi panel</a>
+    {% else %}
+      <a href="/login">Ingresar</a>
+      <a href="/registro" class="btn-primary">Registrarse</a>
+    {% endif %}
+  </div>
+</nav>
 
-  <main>
-    <div class="cuadro-herramienta fondo-blanco" onclick="toggleContenido('word')">
-      <h2>📄 Word</h2>
-      <img src="{{ url_for('static', filename='img/muneco-word.png') }}" alt="Muñeco Word" class="muneco">
-      <div id="word" class="contenido-herramienta">
-        <p>Escribe, edita y decora textos. Aprende a usar fuentes, insertar imágenes y guardar tus documentos.</p>
-        <a href="https://www.youtube.com/watch?v=oNpc8zVjCfk" target="_blank">🎥 Ver tutorial para niños</a>
-        <a href="https://support.microsoft.com/es-es/word" target="_blank">📘 Guía oficial de Word</a>
-        <p class="mensaje-ticu">🐧 ¡Muy bien! Has explorado Word. ¡Sigue así!</p>
+<div class="main-container">
+
+  <!-- HERO CON TICU -->
+  <div style="display:flex;align-items:center;gap:32px;flex-wrap:wrap;margin-bottom:48px;">
+    <div style="flex:1;">
+      <div class="hero-badge">🧰 Herramientas digitales</div>
+      <h1 style="font-family:var(--font-head);font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;letter-spacing:-.02em;margin:12px 0;">
+        Explora las herramientas<br><span style="color:var(--accent);">más usadas en TIC</span>
+      </h1>
+      <p style="color:var(--muted);font-size:1rem;max-width:480px;">
+        Aprende a usar las herramientas digitales esenciales para el trabajo, el estudio y la creación de contenido. Haz clic en cada una para ver tutoriales y recursos.
+      </p>
+    </div>
+    <div id="ticu-herramientas"></div>
+  </div>
+
+  <!-- GRID DE HERRAMIENTAS -->
+  <div class="herr-grid">
+
+    <!-- WORD -->
+    <div class="herr-card" onclick="toggleHerr(this)">
+      <div class="herr-header">
+        <div class="herr-icon-wrap" style="background:rgba(37,99,235,.15);">📄</div>
+        <div>
+          <h2>Microsoft Word</h2>
+          <p>Procesador de texto profesional</p>
+        </div>
+        <span class="herr-chevron">▼</span>
+      </div>
+      <div class="herr-body">
+        <p>Escribe, edita y decora textos. Aprende a usar fuentes, insertar imágenes y guardar documentos de forma profesional.</p>
+        <div class="herr-links">
+          <a class="herr-link" href="https://www.youtube.com/watch?v=oNpc8zVjCfk" target="_blank">🎥 Tutorial para principiantes</a>
+          <a class="herr-link" href="https://support.microsoft.com/es-es/word" target="_blank">📘 Guía oficial de Word</a>
+        </div>
+        <div class="herr-ticu-msg">🐧 ¡Muy bien! Has explorado Word. ¡Sigue así!</div>
       </div>
     </div>
 
-    <div class="cuadro-herramienta fondo-menta" onclick="toggleContenido('excel')">
-      <h2>📊 Excel</h2>
-      <img src="{{ url_for('static', filename='img/muneco-excel.png') }}" alt="Muñeco Excel" class="muneco">
-      <div id="excel" class="contenido-herramienta">
-        <p>Organiza información en tablas. Aprende a sumar, ordenar y usar fórmulas básicas.</p>
-        <a href="https://www.youtube.com/watch?v=UUJ_P_Ya0mU" target="_blank">🎥 Curso básico para niños</a>
-        <a href="https://support.microsoft.com/es-es/excel" target="_blank">📘 Guía oficial de Excel</a>
-        <p class="mensaje-ticu">🐧 ¡Genial! Ya sabes cómo usar Excel. ¡A organizar!</p>
+    <!-- EXCEL -->
+    <div class="herr-card" onclick="toggleHerr(this)">
+      <div class="herr-header">
+        <div class="herr-icon-wrap" style="background:rgba(22,163,74,.15);">📊</div>
+        <div>
+          <h2>Microsoft Excel</h2>
+          <p>Hojas de cálculo y datos</p>
+        </div>
+        <span class="herr-chevron">▼</span>
+      </div>
+      <div class="herr-body">
+        <p>Organiza información en tablas. Aprende a sumar, ordenar y usar fórmulas básicas para analizar datos.</p>
+        <div class="herr-links">
+          <a class="herr-link" href="https://www.youtube.com/watch?v=UUJ_P_Ya0mU" target="_blank">🎥 Curso básico para principiantes</a>
+          <a class="herr-link" href="https://support.microsoft.com/es-es/excel" target="_blank">📘 Guía oficial de Excel</a>
+        </div>
+        <div class="herr-ticu-msg">🐧 ¡Genial! Ya sabes cómo usar Excel. ¡A organizar!</div>
       </div>
     </div>
 
-    <div class="cuadro-herramienta fondo-amarillo" onclick="toggleContenido('canva')">
-      <h2>🎨 Canva</h2>
-      <img src="{{ url_for('static', filename='img/muneco-canva.png') }}" alt="Muñeco Canva" class="muneco">
-      <div id="canva" class="contenido-herramienta">
-        <p>Diseña carteles, presentaciones y videos. Usa plantillas y crea tus propios proyectos visuales.</p>
-        <a href="https://www.youtube.com/watch?v=po7yiNQEb20" target="_blank">🎥 Canva para niños</a>
-        <a href="https://www.canva.com/learn/" target="_blank">📘 Aprende más en Canva</a>
-        <p class="mensaje-ticu">🐧 ¡Tu creatividad brilla! ¡Bien hecho!</p>
+    <!-- CANVA -->
+    <div class="herr-card" onclick="toggleHerr(this)">
+      <div class="herr-header">
+        <div class="herr-icon-wrap" style="background:rgba(168,85,247,.15);">🎨</div>
+        <div>
+          <h2>Canva</h2>
+          <p>Diseño gráfico sin complicaciones</p>
+        </div>
+        <span class="herr-chevron">▼</span>
+      </div>
+      <div class="herr-body">
+        <p>Diseña carteles, presentaciones y videos. Usa plantillas profesionales y crea tus propios proyectos visuales fácilmente.</p>
+        <div class="herr-links">
+          <a class="herr-link" href="https://www.youtube.com/watch?v=po7yiNQEb20" target="_blank">🎥 Tutorial de Canva</a>
+          <a class="herr-link" href="https://www.canva.com/learn/" target="_blank">📘 Aprende más en Canva</a>
+        </div>
+        <div class="herr-ticu-msg">🐧 ¡Tu creatividad brilla! ¡Bien hecho!</div>
       </div>
     </div>
 
-    <div class="cuadro-herramienta fondo-lila" onclick="toggleContenido('powerpoint')">
-      <h2>📽️ PowerPoint</h2>
-      <img src="{{ url_for('static', filename='img/muneco-powerpoint.png') }}" alt="Muñeco PowerPoint" class="muneco">
-      <div id="powerpoint" class="contenido-herramienta">
-        <p>Crea presentaciones con texto, imágenes y animaciones. Ideal para compartir ideas en clase.</p>
-        <a href="https://www.youtube.com/watch?v=UUJ_P_Ya0mU" target="_blank">🎥 Curso fácil para niños</a>
-        <a href="https://support.microsoft.com/es-es/powerpoint" target="_blank">📘 Guía oficial de PowerPoint</a>
-        <p class="mensaje-ticu">🐧 ¡Presenta tus ideas con estilo! ¡Bravo!</p>
+    <!-- POWERPOINT -->
+    <div class="herr-card" onclick="toggleHerr(this)">
+      <div class="herr-header">
+        <div class="herr-icon-wrap" style="background:rgba(239,68,68,.15);">📽️</div>
+        <div>
+          <h2>PowerPoint</h2>
+          <p>Presentaciones con impacto</p>
+        </div>
+        <span class="herr-chevron">▼</span>
+      </div>
+      <div class="herr-body">
+        <p>Crea presentaciones con texto, imágenes y animaciones. Ideal para compartir ideas en clase o en el trabajo.</p>
+        <div class="herr-links">
+          <a class="herr-link" href="https://www.youtube.com/watch?v=UUJ_P_Ya0mU" target="_blank">🎥 Curso fácil de PowerPoint</a>
+          <a class="herr-link" href="https://support.microsoft.com/es-es/powerpoint" target="_blank">📘 Guía oficial de PowerPoint</a>
+        </div>
+        <div class="herr-ticu-msg">🐧 ¡Presenta tus ideas con estilo! ¡Bravo!</div>
       </div>
     </div>
-<div class="cuadro-herramienta fondo-celeste" onclick="toggleContenido('navegadores')">
-  <h2>🌐 Navegadores web</h2>
-  <img src="{{ url_for('static', filename='img/muneco-navegador.png') }}" alt="Muñeco Navegador" class="muneco">
-  <div id="navegadores" class="contenido-herramienta">
-    <p>Descubre cómo usar Chrome, Edge o Firefox para buscar información, guardar páginas y navegar con seguridad.</p>
-    <a href="https://tecnologia.yoaprendoamimanera.com/2025/01/guia-basica-para-usar-navegadores-web.html" target="_blank">📘 Guía gratuita para usar navegadores web</a>
-    <p class="mensaje-ticu">🐧 ¡Explorador digital desbloqueado! 🧭</p>
+
+    <!-- NAVEGADORES -->
+    <div class="herr-card" onclick="toggleHerr(this)">
+      <div class="herr-header">
+        <div class="herr-icon-wrap" style="background:rgba(6,182,212,.15);">🌐</div>
+        <div>
+          <h2>Navegadores Web</h2>
+          <p>Chrome, Edge, Firefox</p>
+        </div>
+        <span class="herr-chevron">▼</span>
+      </div>
+      <div class="herr-body">
+        <p>Descubre cómo usar los navegadores para buscar información de forma segura, guardar páginas y gestionar tu privacidad.</p>
+        <div class="herr-links">
+          <a class="herr-link" href="https://tecnologia.yoaprendoamimanera.com/2025/01/guia-basica-para-usar-navegadores-web.html" target="_blank">📘 Guía gratuita de navegadores</a>
+        </div>
+        <div class="herr-ticu-msg">🐧 ¡Explorador digital desbloqueado! 🧭</div>
+      </div>
+    </div>
+
+    <!-- CORREO -->
+    <div class="herr-card" onclick="toggleHerr(this)">
+      <div class="herr-header">
+        <div class="herr-icon-wrap" style="background:rgba(251,191,36,.15);">📧</div>
+        <div>
+          <h2>Correo Electrónico</h2>
+          <p>Gmail y comunicación digital</p>
+        </div>
+        <span class="herr-chevron">▼</span>
+      </div>
+      <div class="herr-body">
+        <p>Aprende a enviar mensajes, adjuntar archivos y comunicarte de forma profesional con profesores, compañeros y empresas.</p>
+        <div class="herr-links">
+          <a class="herr-link" href="https://support.google.com/mail/answer/7126229?hl=es" target="_blank">📘 Guía de Gmail para principiantes</a>
+        </div>
+        <div class="herr-ticu-msg">🐧 ¡Mensaje enviado con éxito! 📬</div>
+      </div>
+    </div>
+
   </div>
 </div>
 
-    <div class="cuadro-herramienta fondo-rosado" onclick="toggleContenido('correo')">
-      <h2>📧 Correo electrónico</h2>
-      <img src="{{ url_for('static', filename='img/muneco-correo.png') }}" alt="Muñeco Correo" class="muneco">
-      <div id="correo" class="contenido-herramienta">
-        <p>Aprende a enviar mensajes, adjuntar archivos y comunicarte con tus profesores y amigos.</p>
-        <a href="https://support.google.com/mail/answer/7126229?hl=es" target="_blank">📘 Guía de Gmail para principiantes</a>
-        <p class="mensaje-ticu">🐧 ¡Mensaje enviado con éxito! 📬</p>
-      </div>
-    </div>
-  </main>
+<footer>
+  <p>© 2025 TIC Platform — Formación Digital Profesional</p>
+</footer>
 
-  <footer class="fondo-menta">
-    <p>&copy; 2025 Herramientas TIC - Mundo TIC Infantil</p>
-  </footer>
+<script src="{{ url_for('static', filename='ticu-mascota.js') }}"></script>
+<script>
+  TICU.render('ticu-herramientas', 'thinking', '¿Cuál herramienta exploras hoy? 🤔', 'sm');
+
+  function toggleHerr(card) {
+    const body = card.querySelector('.herr-body');
+    const isOpen = card.classList.contains('open');
+    // Cerrar todos
+    document.querySelectorAll('.herr-card').forEach(c => {
+      c.classList.remove('open');
+      c.querySelector('.herr-body').style.display = 'none';
+    });
+    // Abrir el clickeado si estaba cerrado
+    if (!isOpen) {
+      card.classList.add('open');
+      body.style.display = 'block';
+      // TICU reacciona
+      TICU.render('ticu-herramientas', 'happy', '¡Buena elección! 🎉', 'sm');
+    } else {
+      TICU.render('ticu-herramientas', 'thinking', '¿Cuál herramienta exploras hoy? 🤔', 'sm');
+    }
+  }
+</script>
 
 </body>
 </html>

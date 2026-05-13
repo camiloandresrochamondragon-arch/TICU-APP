@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block title %}{{ modulo.icono }} {{ modulo.nombre }} — TIC Platform{% endblock %}
+
+{% block content %}
+<div class="mundo-page">
+
+  <!-- HERO DEL MUNDO -->
+  <div class="mundo-hero" style="--accent: {{ accent_color | default('#4f8ef7') }}">
+    <div class="mundo-hero-inner">
+      <div class="mundo-icon-big">{{ modulo.icono }}</div>
+      <h1>{{ modulo.nombre }}</h1>
+      <p>{{ modulo.descripcion }}</p>
+
+      {% if progreso and progreso.completado %}
+        <div class="mundo-badge-completado">✓ Completado — Mejor puntaje: {{ progreso.mejor_puntaje }}/{{ modulo.total_preguntas }}</div>
+      {% else %}
+        <div class="mundo-badge-pendiente">Necesitas {{ modulo.puntaje_minimo }}/{{ modulo.total_preguntas }} para completar</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="mundo-content">
+
+    <!-- RECURSOS -->
+    <section class="mundo-section">
+      <h2 class="section-title">🎯 Herramientas y recursos</h2>
+      <div class="resources-grid">
+        {% block recursos %}{% endblock %}
+      </div>
+    </section>
+
+    <!-- APRENDE ANTES -->
+    <section class="mundo-section">
+      <h2 class="section-title">📘 Aprende antes de responder</h2>
+      <div class="aprende-list">
+        {% block aprende %}{% endblock %}
+      </div>
+    </section>
+
+    <!-- JUEGO PROPIO (opcional) -->
+    {% block juego %}{% endblock %}
+
+    <!-- QUIZ -->
+    <section class="mundo-section quiz-section" id="quiz-section">
+      <div class="quiz-header">
+        <h2 class="section-title">❓ Quiz — {{ modulo.nombre }}</h2>
+        <p class="quiz-sub">Necesitas <strong>{{ modulo.puntaje_minimo }} de {{ modulo.total_preguntas }}</strong> respuestas correctas para completar este módulo.</p>
+      </div>
+
+      <!-- VIDAS + PUNTAJE -->
+      <div class="quiz-status">
+        <div class="quiz-lives" id="quiz-lives">
+          <span class="life active">❤️</span>
+          <span class="life active">❤️</span>
+          <span class="life active">❤️</span>
+        </div>
+        <div class="quiz-score-wrap">
+          <span class="quiz-score-label">Correctas</span>
+          <span class="quiz-score" id="quiz-score">0</span>
+          <span class="quiz-score-label">/ {{ modulo.total_preguntas }}</span>
+        </div>
+      </div>
+
+      <!-- PREGUNTA -->
+      <div class="quiz-card" id="quiz-card">
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill" id="quiz-progress" style="width:0%"></div>
+        </div>
+        <div id="quiz-content"></div>
+      </div>
+
+      <!-- RESULTADO FINAL -->
+      <div class="quiz-result hidden" id="quiz-result">
+        <div class="result-icon" id="result-icon"></div>
+        <h3 id="result-title"></h3>
+        <p id="result-msg"></p>
+        <div class="result-score" id="result-score"></div>
+        <div class="result-logros hidden" id="result-logros"></div>
+        <div class="result-actions">
+          <button class="btn btn-ghost" onclick="reiniciarQuiz()">Intentar de nuevo</button>
+          <a href="/dashboard" class="btn btn-solid">Ver mi progreso →</a>
+        </div>
+      </div>
+
+      <!-- FEEDBACK EMOCIONAL -->
+      <div class="quiz-feedback" id="quiz-feedback"></div>
+    </section>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Datos del módulo en JSON para evitar conflictos Jinja + JS -->
+<script id="modulo-data" type="application/json">
+{
+  "slug": "{{ modulo.slug }}",
+  "puntaje_minimo": {{ modulo.puntaje_minimo }},
+  "total": {{ modulo.total_preguntas }},
+  "preguntas": {% block quiz_preguntas %}[]{% endblock %}
+}
+</script>
+
+<script>
+// ── LEER DATOS DESDE EL JSON (sin mezclar Jinja en JS) ──
+var _data        = JSON.parse(document.getElementById('modulo-data').textContent);
+var MODULO_SLUG  = _data.slug;
+var PUNTAJE_MINIMO = _data.puntaje_minimo;
+var TOTAL        = _data.total;
+var PREGUNTAS    = _data.preguntas;
+
+// ── ESTADO ──
+let vidas = 3;
+let correctas = 0;
+let preguntaIdx = 0;
+let respondidas = 0;
+let terminado = false;
+
+// ── ARRANCAR ──
+window.addEventListener('DOMContentLoaded', () => {
+  mostrarPregunta();
+});
+
+function mostrarPregunta() {
+  if (preguntaIdx >= PREGUNTAS.length || vidas === 0) {
+    terminarQuiz();
+    return;
+  }
+
+  const p = PREGUNTAS[preguntaIdx];
+  const pct = Math.round((preguntaIdx / PREGUNTAS.length) * 100);
+  document.getElementById('quiz-progress').style.width = pct + '%';
+
+  document.getElementById('quiz-content').innerHTML = `
+    <div class="quiz-num">Pregunta ${preguntaIdx + 1} de ${PREGUNTAS.length}</div>
+    <div class="quiz-pregunta">${p.pregunta}</div>
+    <div class="quiz-opciones">
+      ${p.opciones.map((op, i) => `
+        <button class="quiz-opcion" onclick="responder(${i}, ${p.correcta}, this)">
+          <span class="opcion-letra">${['A','B','C','D'][i]}</span>
+          <span>${op}</span>
+        </button>
+      `).join('')}
+    </div>
+  `;
+}
+
+function responder(idx, correctaIdx, btn) {
+  if (terminado) return;
+
+  const opciones = document.querySelectorAll('.quiz-opcion');
+  opciones.forEach(b => b.disabled = true);
+
+  const esCorrecta = idx === correctaIdx;
+
+  if (esCorrecta) {
+    correctas++;
+    document.getElementById('quiz-score').textContent = correctas;
+    btn.classList.add('correcta');
+    mostrarFeedback('¡Correcto! 🎉', 'success');
+  } else {
+    vidas--;
+    btn.classList.add('incorrecta');
+    opciones[correctaIdx].classList.add('correcta');
+    actualizarVidas();
+    mostrarFeedback(`Incorrecto 😟 — te queda${vidas === 1 ? '' : 'n'} ${vidas} vida${vidas === 1 ? '' : 's'}`, 'error');
+  }
+
+  respondidas++;
+  preguntaIdx++;
+
+  setTimeout(() => {
+    document.getElementById('quiz-feedback').className = 'quiz-feedback';
+    if (vidas === 0 || preguntaIdx >= PREGUNTAS.length) {
+      terminarQuiz();
+    } else {
+      mostrarPregunta();
+    }
+  }, 1400);
+}
+
+function actualizarVidas() {
+  const lives = document.querySelectorAll('.life');
+  lives.forEach((l, i) => {
+    if (i >= vidas) l.classList.remove('active');
+  });
+}
+
+function mostrarFeedback(texto, tipo) {
+  const el = document.getElementById('quiz-feedback');
+  el.textContent = texto;
+  el.className = 'quiz-feedback show ' + tipo;
+}
+
+async function terminarQuiz() {
+  terminado = true;
+  document.getElementById('quiz-card').classList.add('hidden');
+
+  // Enviar al servidor
+  let nuevosLogros = [];
+  let paso = false;
+
+  try {
+    const res = await fetch('/quiz/resultado', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug: MODULO_SLUG, puntaje: correctas, total: TOTAL })
+    });
+    const data = await res.json();
+    paso = data.paso;
+    nuevosLogros = data.nuevos_logros || [];
+  } catch(e) {
+    paso = correctas >= PUNTAJE_MINIMO;
+  }
+
+  // Mostrar resultado
+  const resultDiv = document.getElementById('quiz-result');
+  resultDiv.classList.remove('hidden');
+
+  document.getElementById('result-icon').textContent = paso ? '🏆' : '😢';
+  document.getElementById('result-title').textContent = paso ? '¡Módulo completado!' : 'No fue suficiente esta vez';
+  document.getElementById('result-msg').textContent = paso
+    ? '¡Excelente trabajo! Has desbloqueado el siguiente módulo.'
+    : `Necesitabas ${PUNTAJE_MINIMO} respuestas correctas. ¡Inténtalo de nuevo!`;
+  document.getElementById('result-score').textContent = `${correctas} / ${TOTAL} correctas`;
+
+  if (nuevosLogros.length > 0) {
+    const logrosDiv = document.getElementById('result-logros');
+    logrosDiv.classList.remove('hidden');
+    logrosDiv.innerHTML = `<p class="logros-label">🏅 Nuevos logros obtenidos:</p>` +
+      nuevosLogros.map(l => `<span class="logro-chip">${l.replace(/-/g,' ')}</span>`).join('');
+  }
+}
+
+function reiniciarQuiz() {
+  vidas = 3; correctas = 0; preguntaIdx = 0; respondidas = 0; terminado = false;
+  document.getElementById('quiz-score').textContent = '0';
+  document.querySelectorAll('.life').forEach(l => l.classList.add('active'));
+  document.getElementById('quiz-progress').style.width = '0%';
+  document.getElementById('quiz-result').classList.add('hidden');
+  document.getElementById('quiz-card').classList.remove('hidden');
+  mostrarPregunta();
+}
+</script>
+{% endblock %}

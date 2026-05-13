@@ -1,0 +1,5 @@
+USE TICU_DB;
+
+ALTER TABLE usuario ADD email NVARCHAR(150) NULL;
+ALTER TABLE usuario ADD reset_token NVARCHAR(100) NULL;
+ALTER TABLE usuario ADD reset_expira DATETIME NULL;

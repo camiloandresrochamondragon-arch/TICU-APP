@@ -1,126 +1,69 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mundo de Creación de Contenido TICU</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-  <script>
-    let vidas = 3;
-    let preguntaActual = 0;
+{% extends "mundo_base.html" %}
 
-    const preguntas = [
-      { pregunta: "¿Qué es la creación de contenido?", opciones: ["Hacer tareas", "Diseñar publicaciones, videos o podcasts", "Jugar videojuegos", "Leer libros"], correcta: 1 },
-      { pregunta: "¿Qué herramienta sirve para crear presentaciones interactivas?", opciones: ["Word", "Genially", "Excel", "Paint"], correcta: 1 },
-      { pregunta: "¿Qué app permite editar videos fácilmente?", opciones: ["CapCut", "PowerPoint", "Audacity", "Scratch"], correcta: 0 },
-      { pregunta: "¿Qué es Canva?", opciones: ["Una red social", "Una app para crear diseños", "Un videojuego", "Una app de música"], correcta: 1 },
-      { pregunta: "¿Qué es un podcast?", opciones: ["Un dibujo", "Un audio educativo", "Una app de juegos", "Una red social"], correcta: 1 },
-      { pregunta: "¿Qué es OBS Studio?", opciones: ["Una app para grabar y transmitir contenido", "Una red social", "Una app de dibujo", "Una app de música"], correcta: 0 },
-      { pregunta: "¿Qué tipo de contenido se puede crear?", opciones: ["Videos, imágenes, textos y audios", "Solo dibujos", "Solo música", "Solo juegos"], correcta: 0 },
-      { pregunta: "¿Qué es Interacty?", opciones: ["Una app para crear juegos y lecciones interactivas", "Una red social", "Una app de dibujo", "Una app de música"], correcta: 0 },
-      { pregunta: "¿Qué es Árbol ABC?", opciones: ["Una app de matemáticas", "Una plataforma de juegos educativos", "Una red social", "Una app de dibujo"], correcta: 1 },
-      { pregunta: "¿Qué es Genially?", opciones: ["Una app para crear contenido interactivo", "Una red social", "Una app de música", "Una app de dibujo"], correcta: 0 }
-    ];
-
-    function mostrarSiguientePregunta() {
-      const quiz = document.getElementById("quiz-container");
-      if (preguntaActual >= preguntas.length || vidas === 0) {
-        quiz.innerHTML = vidas === 0
-          ? "<p>¡Has perdido todas las vidas! 😢 Inténtalo otra vez.</p><button onclick='reiniciarQuiz()'>Reintentar</button>"
-          : "<p>¡Quiz completado! 🎉</p>";
-        return;
-      }
-
-      const p = preguntas[preguntaActual];
-      quiz.innerHTML = `<p>${p.pregunta}</p>` + p.opciones.map((op, i) =>
-        `<button onclick="responder(${i === p.correcta})">${op}</button>`).join("");
-    }
-
-    function responder(correcta) {
-      if (!correcta) {
-        vidas--;
-        document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
-        mostrarMensaje("¡Ups! Te queda" + (vidas === 1 ? "" : "n") + ` ${vidas} vida${vidas === 1 ? "" : "s"} 😟`);
-      } else {
-        mostrarMensaje("¡Correcto! 🎉");
-      }
-      preguntaActual++;
-      mostrarSiguientePregunta();
-    }
-
-    function mostrarMensaje(texto) {
-      const mensaje = document.getElementById("mensaje-emocional");
-      mensaje.innerText = texto;
-      mensaje.style.opacity = 1;
-      setTimeout(() => mensaje.style.opacity = 0, 2000);
-    }
-
-    function reiniciarQuiz() {
-      vidas = 3;
-      preguntaActual = 0;
-      document.getElementById("vidas").innerText = "Vidas: ❤️❤️❤️";
-      mostrarSiguientePregunta();
-    }
-
-    window.onload = mostrarSiguientePregunta;
-  </script>
-</head>
-<body class="fondo-lila">
-
-  <header class="fondo-azul">
-    <h1>📸 Mundo de Creación de Contenido TICU</h1>
-    <p class="intro">Aquí aprenderás a diseñar publicaciones, grabar videos, crear podcasts y convertirte en un influencer educativo. ¡Prepárate para compartir tu voz con el mundo!</p>
-  </header>
-
-  <!-- Herramientas gratuitas -->
-  <section class="fondo-violeta">
-    <h2 class="subtitulo">🎨 Crea contenido educativo</h2>
-    <div class="grid-accesos">
-      <div class="acceso-cuadro">
-        <p>🧠 <strong>Genially</strong></p>
-        <p>Diseña presentaciones interactivas y juegos educativos.</p>
-        <a href="https://genially.com/es/plantillas/juegos/juegos-educativos-online/" target="_blank">Explorar Genially</a>
-      </div>
-      <div class="acceso-cuadro">
-        <p>🎙️ <strong>Interacty</strong></p>
-        <p>Crea juegos, lecciones y cuestionarios con audio y video.</p>
-        <a href="https://interacty.me/es/education" target="_blank">Usar Interacty</a>
-      </div>
-      <div class="acceso-cuadro">
-        <p>🌳 <strong>Árbol ABC</strong></p>
-        <p>Juegos educativos para niños con enfoque creativo y visual.</p>
-        <a href="https://arbolabc.com/" target="_blank">Explorar Árbol ABC</a>
-      </div>
+{% block recursos %}
+  <div class="resource-card">
+    <div class="resource-icon">🧠</div>
+    <div class="resource-info">
+      <strong>Genially</strong>
+      <p>Presentaciones interactivas y juegos educativos.</p>
     </div>
-    <p class="intro">¡Haz clic en una herramienta y empieza a crear tu contenido educativo!</p>
-  </section>
+    <a href="https://genially.com/es/plantillas/juegos/juegos-educativos-online/" target="_blank" class="resource-link">Abrir →</a>
+  </div>
+  <div class="resource-card">
+    <div class="resource-icon">🎙️</div>
+    <div class="resource-info">
+      <strong>Interacty</strong>
+      <p>Crea juegos, lecciones y cuestionarios con audio y video.</p>
+    </div>
+    <a href="https://interacty.me/es/education" target="_blank" class="resource-link">Abrir →</a>
+  </div>
+  <div class="resource-card">
+    <div class="resource-icon">🌳</div>
+    <div class="resource-info">
+      <strong>Árbol ABC</strong>
+      <p>Juegos educativos con enfoque creativo y visual.</p>
+    </div>
+    <a href="https://arbolabc.com/" target="_blank" class="resource-link">Abrir →</a>
+  </div>
+  <div class="resource-card">
+    <div class="resource-icon">🎬</div>
+    <div class="resource-info">
+      <strong>CapCut</strong>
+      <p>Edita y crea videos cortos de forma profesional.</p>
+    </div>
+    <a href="https://www.capcut.com/es-es/" target="_blank" class="resource-link">Abrir →</a>
+  </div>
+{% endblock %}
 
-  <!-- Videos educativos -->
-  <section class="fondo-blanco">
-    <h2>📘 Aprende antes de publicar</h2>
-    <ul>
-      <li><a href="https://www.youtube.com/watch?v=r73-ymdZPCo" target="_blank">🎬 CURSO Completo de CREACIÓN DE CONTENIDO</a> – Aprende desde cero cómo crear contenido educativo y monetizarlo.</li>
-      <li><a href="https://www.youtube.com/watch?v=Nlp4iHkZ6_E" target="_blank">🎧 Podcast EP #36 | Cómo crear contenido que la gente quiera ver</a> – Descubre qué tipo de contenido conecta con tu audiencia.</li>
-      <li><a href="https://www.youtube.com/watch?v=Ps6Gyy1k37g" target="_blank">🚀 Como EMPEZAR a ser CREADOR de contenido 2024</a> – Consejos prácticos para lanzarte al mundo del contenido digital.</li>
-      <li><a href="https://www.youtube.com/watch?v=u7Za5gpKQE4&pp=ygUPI2NyZWFjb250ZW5pZG9z" target="_blank">💡 30 ideas de contenidos para tus Redes Sociales con Pablo Di</a> – Ejemplos creativos para mantener tu perfil activo y educativo.</li>
-      <li><a href="https://www.youtube.com/watch?v=08ACKBF3bBc" target="_blank">📱 Cómo crear CONTENIDO para tus REDES SOCIALES</a> – Aprende a planear y publicar contenido atractivo y útil.</li>
-      <li><a href="https://www.youtube.com/watch?v=A--30-ljOYA" target="_blank">📊 Estrategia Definitiva: Crea Contenido para Redes Sociales</a> – Aprende a conectar con tu audiencia y aumentar tu impacto educativo.</li>
-    </ul>
-    <p class="intro">¡Mira estos videos antes de comenzar el quiz y conviértete en un influencer TICU!</p>
-  </section>
+{% block aprende %}
+  <a class="aprende-item" href="https://www.youtube.com/watch?v=r73-ymdZPCo" target="_blank">
+    <span class="aprende-tag">VIDEO</span> Curso completo de creación de contenido desde cero
+  </a>
+  <a class="aprende-item" href="https://www.youtube.com/watch?v=Ps6Gyy1k37g" target="_blank">
+    <span class="aprende-tag">VIDEO</span> Cómo empezar a ser creador de contenido en 2024
+  </a>
+  <a class="aprende-item" href="https://www.youtube.com/watch?v=08ACKBF3bBc" target="_blank">
+    <span class="aprende-tag">VIDEO</span> Cómo crear contenido para tus redes sociales
+  </a>
+  <a class="aprende-item" href="https://www.youtube.com/watch?v=u7Za5gpKQE4" target="_blank">
+    <span class="aprende-tag">VIDEO</span> 30 ideas de contenidos para redes sociales
+  </a>
+  <a class="aprende-item" href="https://www.youtube.com/watch?v=A--30-ljOYA" target="_blank">
+    <span class="aprende-tag">VIDEO</span> Estrategia definitiva para crear contenido con impacto
+  </a>
+{% endblock %}
 
-  <!-- Quiz TICU -->
-  <section class="fondo-amarillo">
-    <h2>❓ Quiz TICU: ¿Sabes crear contenido educativo?</h2>
-    <p>Responde las preguntas. Tienes 3 vidas. Si las pierdes, ¡inténtalo otra vez!</p>
-    <div id="quiz-container"></div>
-    <p id="vidas">Vidas: ❤️❤️❤️</p>
-    <div id="mensaje-emocional" class="mensaje"></div>
-  </section>
-
-  <footer class="fondo-verde">
-    <p>&copy; 2025 Mundo TICU - Creación de Contenido Educativo</p>
-  </footer>
-
-</body>
-</html>
+{% block quiz_preguntas %}
+[
+  { "pregunta": "¿Qué es la creación de contenido?", "opciones": ["Hacer tareas", "Diseñar publicaciones, videos o podcasts", "Jugar videojuegos", "Leer libros"], "correcta": 1 },
+  { "pregunta": "¿Qué herramienta sirve para crear presentaciones interactivas?", "opciones": ["Word", "Genially", "Excel", "Paint"], "correcta": 1 },
+  { "pregunta": "¿Qué app permite editar videos fácilmente?", "opciones": ["CapCut", "PowerPoint", "Audacity", "Scratch"], "correcta": 0 },
+  { "pregunta": "¿Qué es Canva?", "opciones": ["Una red social", "Una app para crear diseños", "Un videojuego", "Una app de música"], "correcta": 1 },
+  { "pregunta": "¿Qué es un podcast?", "opciones": ["Un dibujo", "Un audio educativo", "Una app de juegos", "Una red social"], "correcta": 1 },
+  { "pregunta": "¿Qué es OBS Studio?", "opciones": ["Una app para grabar y transmitir contenido", "Una red social", "Una app de dibujo", "Una app de música"], "correcta": 0 },
+  { "pregunta": "¿Qué tipo de contenido se puede crear?", "opciones": ["Videos, imágenes, textos y audios", "Solo dibujos", "Solo música", "Solo juegos"], "correcta": 0 },
+  { "pregunta": "¿Qué es Interacty?", "opciones": ["Una app para crear juegos y lecciones interactivas", "Una red social", "Una app de dibujo", "Una app de música"], "correcta": 0 },
+  { "pregunta": "¿Qué es Árbol ABC?", "opciones": ["Una app de matemáticas", "Una plataforma de juegos educativos", "Una red social", "Una app de dibujo"], "correcta": 1 },
+  { "pregunta": "¿Qué es Genially?", "opciones": ["Una app para crear contenido interactivo", "Una red social", "Una app de música", "Una app de dibujo"], "correcta": 0 }
+]
+{% endblock %}

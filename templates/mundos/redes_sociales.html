@@ -1,121 +1,53 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mundo de Redes Sociales TICU</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-  <script>
-    let vidas = 3;
-    let preguntaActual = 0;
+{% extends "mundo_base.html" %}
 
-    const preguntas = [
-      { pregunta: "¿Qué son las redes sociales?", opciones: ["Un juego", "Una forma de comunicarse en internet", "Un robot", "Una app de dibujo"], correcta: 1 },
-      { pregunta: "¿Qué debemos cuidar al usar redes sociales?", opciones: ["La batería", "La privacidad", "El volumen", "La velocidad"], correcta: 1 },
-      { pregunta: "¿Qué es el ciberbullying?", opciones: ["Un juego", "Una forma de programar", "Una agresión en línea", "Una app de música"], correcta: 2 },
-      { pregunta: "¿Qué información no debemos compartir?", opciones: ["Nombre completo", "Color favorito", "Comida preferida", "Dibujo de un robot"], correcta: 0 },
-      { pregunta: "¿Qué es una contraseña segura?", opciones: ["1234", "Mi nombre", "Una combinación secreta", "Mi fecha de cumpleaños"], correcta: 2 },
-      { pregunta: "¿Qué debemos hacer si alguien nos molesta en línea?", opciones: ["Ignorar", "Responder con insultos", "Contar a un adulto", "Borrar la app"], correcta: 2 },
-      { pregunta: "¿Qué red social usan muchos niños?", opciones: ["TikTok", "LinkedIn", "Facebook", "Scratch"], correcta: 0 },
-      { pregunta: "¿Qué es la privacidad digital?", opciones: ["Guardar secretos", "Controlar quién ve tu información", "Apagar el celular", "Jugar sin conexión"], correcta: 1 },
-      { pregunta: "¿Qué es una huella digital?", opciones: ["Una marca en la pantalla", "La información que dejamos en internet", "Una app de dibujo", "Un juego de detectives"], correcta: 1 },
-      { pregunta: "¿Qué debemos hacer antes de publicar algo?", opciones: ["Revisar si es seguro", "Publicar rápido", "Pedir likes", "Compartir con todos"], correcta: 0 }
-    ];
-
-    function mostrarSiguientePregunta() {
-      const quiz = document.getElementById("quiz-container");
-      if (preguntaActual >= preguntas.length || vidas === 0) {
-        quiz.innerHTML = vidas === 0
-          ? "<p>¡Has perdido todas las vidas! 😢 Inténtalo otra vez.</p><button onclick='reiniciarQuiz()'>Reintentar</button>"
-          : "<p>¡Quiz completado! 🎉</p>";
-        return;
-      }
-
-      const p = preguntas[preguntaActual];
-      quiz.innerHTML = `<p>${p.pregunta}</p>` + p.opciones.map((op, i) =>
-        `<button onclick="responder(${i === p.correcta})">${op}</button>`).join("");
-    }
-
-    function responder(correcta) {
-      if (!correcta) {
-        vidas--;
-        document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
-        mostrarMensaje("¡Ups! Te queda" + (vidas === 1 ? "" : "n") + ` ${vidas} vida${vidas === 1 ? "" : "s"} 😟`);
-      } else {
-        mostrarMensaje("¡Correcto! 🎉");
-      }
-      preguntaActual++;
-      mostrarSiguientePregunta();
-    }
-
-    function mostrarMensaje(texto) {
-      const mensaje = document.getElementById("mensaje-emocional");
-      mensaje.innerText = texto;
-      mensaje.style.opacity = 1;
-      setTimeout(() => mensaje.style.opacity = 0, 2000);
-    }
-
-    function reiniciarQuiz() {
-      vidas = 3;
-      preguntaActual = 0;
-      document.getElementById("vidas").innerText = "Vidas: ❤️❤️❤️";
-      mostrarSiguientePregunta();
-    }
-
-    window.onload = mostrarSiguientePregunta;
-  </script>
-</head>
-<body class="fondo-lila">
-
-  <header class="fondo-azul">
-    <h1>📱 Mundo de Redes Sociales TICU</h1>
-    <p class="intro">Aquí aprenderás cómo comunicarte con seguridad, proteger tu privacidad y usar las redes sociales de forma responsable. ¡Prepárate para conectarte con cuidado!</p>
-  </header>
-
-  <!-- Juegos interactivos -->
-  <section class="fondo-violeta">
-    <h2 class="subtitulo">🎮 Juega y aprende sobre redes sociales</h2>
-    <div class="grid-accesos">
-      <div class="acceso-cuadro">
-        <p>🧠 <strong>Wordwall: Redes Sociales</strong></p>
-        <p>Juegos tipo ruleta, sopa de letras y verdadero/falso sobre seguridad digital.</p>
-        <a href="https://wordwall.net/es-ar/community/las-redes-sociales" target="_blank">Jugar en Wordwall</a>
-      </div>
-      <div class="acceso-cuadro">
-        <p>🔐 <strong>Educaplay: Test de Redes Sociales</strong></p>
-        <p>Juego tipo test para aprender sobre privacidad y buen uso de redes.</p>
-        <a href="https://es.educaplay.com/recursos-educativos/31429-redes_sociales.html" target="_blank">Jugar en Educaplay</a>
-      </div>
+{% block recursos %}
+  <div class="resource-card">
+    <div class="resource-icon">🧠</div>
+    <div class="resource-info">
+      <strong>Wordwall: Redes Sociales</strong>
+      <p>Ruleta, sopa de letras y verdadero/falso sobre seguridad digital.</p>
     </div>
-    <p class="intro">¡Haz clic en un juego y aprende a comunicarte con seguridad!</p>
-  </section>
+    <a href="https://wordwall.net/es-ar/community/las-redes-sociales" target="_blank" class="resource-link">Abrir →</a>
+  </div>
+  <div class="resource-card">
+    <div class="resource-icon">🔐</div>
+    <div class="resource-info">
+      <strong>Educaplay: Test de Redes</strong>
+      <p>Aprende sobre privacidad y buen uso de redes sociales.</p>
+    </div>
+    <a href="https://es.educaplay.com/recursos-educativos/31429-redes_sociales.html" target="_blank" class="resource-link">Abrir →</a>
+  </div>
+{% endblock %}
 
-  <!-- Videos educativos -->
-  <section class="fondo-blanco">
-    <h2>📘 Aprende antes de publicar</h2>
-    <ul>
-      <li><a href="https://www.youtube.com/watch?v=rHDTJQKW2y8" target="_blank">🔐 Privacidad online para niños - Protección y seguridad</a> – Enseña cómo cuidar la información personal en redes sociales.</li>
-      <li><a href="https://www.youtube.com/watch?v=_uNnjFlFxsc" target="_blank">⚠️ Los peligros de Internet para los niños y niñas: REDES</a> – Explica los riesgos y cómo navegar con responsabilidad.</li>
-      <li><a href="https://www.youtube.com/watch?v=fCx-_ff-fQM" target="_blank">👧 Lucía y las redes sociales</a> – Historia animada que enseña civismo digital y respeto en línea.</li>
-      <li><a href="https://www.youtube.com/watch?v=tBObvkx_nOg" target="_blank">📱 Uso responsable de la tecnología para niños</a> – Enseña reglas básicas para usar redes sociales con cuidado.</li>
-      <li><a href="https://www.youtube.com/watch?v=SD9K8Pfogzc" target="_blank">🌐 Navegando Seguro en Internet: Consejos para Niños</a> – Guía visual para protegerse mientras se navega y se comunica.</li>
-      <li><a href="https://www.youtube.com/watch?v=G46KyZTxPE4" target="_blank">🛡️ Seguridad en línea para niños</a> – Explica las amenazas digitales y cómo protegerse con ayuda de adultos.</li>
-    </ul>
-    <p class="intro">¡Mira estos videos antes de comenzar el quiz y conviértete en un comunicador TICU!</p>
-  </section>
+{% block aprende %}
+  <a class="aprende-item" href="https://www.youtube.com/watch?v=rHDTJQKW2y8" target="_blank">
+    <span class="aprende-tag">VIDEO</span> Privacidad online para niños — protección y seguridad
+  </a>
+  <a class="aprende-item" href="https://www.youtube.com/watch?v=_uNnjFlFxsc" target="_blank">
+    <span class="aprende-tag">VIDEO</span> Los peligros de internet para niños — REDES
+  </a>
+  <a class="aprende-item" href="https://www.youtube.com/watch?v=fCx-_ff-fQM" target="_blank">
+    <span class="aprende-tag">VIDEO</span> Lucía y las redes sociales — civismo digital
+  </a>
+  <a class="aprende-item" href="https://www.youtube.com/watch?v=tBObvkx_nOg" target="_blank">
+    <span class="aprende-tag">VIDEO</span> Uso responsable de la tecnología para niños
+  </a>
+  <a class="aprende-item" href="https://www.youtube.com/watch?v=G46KyZTxPE4" target="_blank">
+    <span class="aprende-tag">VIDEO</span> Seguridad en línea — amenazas y cómo protegerse
+  </a>
+{% endblock %}
 
-  <!-- Quiz TICU -->
-  <section class="fondo-amarillo">
-    <h2>❓ Quiz TICU: ¿Sabes comunicarte con seguridad?</h2>
-    <p>Responde las preguntas. Tienes 3 vidas. Si las pierdes, ¡inténtalo otra vez!</p>
-    <div id="quiz-container"></div>
-    <p id="vidas">Vidas: ❤️❤️❤️</p>
-    <div id="mensaje-emocional" class="mensaje"></div>
-  </section>
-
-  <footer class="fondo-verde">
-    <p>&copy; 2025 Mundo TICU - Redes Sociales Seguras</p>
-  </footer>
-
-</body>
-</html>
+{% block quiz_preguntas %}
+[
+  { "pregunta": "¿Qué son las redes sociales?", "opciones": ["Un juego", "Una forma de comunicarse en internet", "Un robot", "Una app de dibujo"], "correcta": 1 },
+  { "pregunta": "¿Qué debemos cuidar al usar redes sociales?", "opciones": ["La batería", "La privacidad", "El volumen", "La velocidad"], "correcta": 1 },
+  { "pregunta": "¿Qué es el ciberbullying?", "opciones": ["Un juego", "Una forma de programar", "Una agresión en línea", "Una app de música"], "correcta": 2 },
+  { "pregunta": "¿Qué información no debemos compartir?", "opciones": ["Nombre completo y dirección", "Color favorito", "Comida preferida", "Dibujo de un robot"], "correcta": 0 },
+  { "pregunta": "¿Qué es una contraseña segura?", "opciones": ["1234", "Mi nombre", "Una combinación secreta de letras y números", "Mi fecha de cumpleaños"], "correcta": 2 },
+  { "pregunta": "¿Qué debemos hacer si alguien nos molesta en línea?", "opciones": ["Ignorar siempre", "Responder con insultos", "Contar a un adulto de confianza", "Borrar la app"], "correcta": 2 },
+  { "pregunta": "¿Qué red social usan muchos niños y jóvenes?", "opciones": ["TikTok", "LinkedIn", "Facebook", "Scratch"], "correcta": 0 },
+  { "pregunta": "¿Qué es la privacidad digital?", "opciones": ["Guardar secretos", "Controlar quién ve tu información", "Apagar el celular", "Jugar sin conexión"], "correcta": 1 },
+  { "pregunta": "¿Qué es una huella digital?", "opciones": ["Una marca en la pantalla", "La información que dejamos en internet", "Una app de dibujo", "Un juego de detectives"], "correcta": 1 },
+  { "pregunta": "¿Qué debemos hacer antes de publicar algo?", "opciones": ["Revisar si es seguro compartirlo", "Publicar rápido", "Pedir likes", "Compartir con todos"], "correcta": 0 }
+]
+{% endblock %}

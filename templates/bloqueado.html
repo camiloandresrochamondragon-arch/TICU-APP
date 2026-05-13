@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo bloqueado — TIC Platform</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='ticu-mascota.css') }}">
+</head>
+<body>
+
+<nav class="topbar">
+  <a href="/" class="topbar-logo">
+    <span>🚀</span> TIC Platform
+    <span class="logo-badge">BETA</span>
+  </a>
+  <div class="topbar-nav">
+    <a href="/retos">Módulos</a>
+    {% if current_user.is_authenticated %}
+      <div class="user-chip">
+        <div class="avatar">{{ current_user.username[0].upper() }}</div>
+        {{ current_user.username }}
+      </div>
+      <a href="/dashboard" class="btn-primary">Mi panel</a>
+    {% endif %}
+  </div>
+</nav>
+
+<div class="bloqueado-page">
+  <div class="bloqueado-card">
+
+    <div id="ticu-bloqueado" style="margin-bottom:20px;"></div>
+
+    <span class="bloqueado-icon">🔒</span>
+    <h2>{{ modulo.icono }} {{ modulo.nombre }} está bloqueado</h2>
+    <p>
+      Para acceder a este módulo primero debes completar
+      <strong>{{ anterior.icono }} {{ anterior.nombre }}</strong>
+      con un puntaje mínimo de <strong>7/10</strong>.
+    </p>
+
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+      <a href="/mundos/{{ anterior.slug }}" class="btn btn-solid">
+        Ir a {{ anterior.nombre }} →
+      </a>
+      <a href="/retos" class="btn btn-ghost">Ver todos los módulos</a>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 TIC Platform — Formación Digital Profesional</p>
+</footer>
+
+<script src="{{ url_for('static', filename='ticu-mascota.js') }}"></script>
+<script>
+  TICU.render('ticu-bloqueado', 'sad', '¡Completa el módulo anterior primero! 💪', 'sm');
+</script>
+</body>
+</html>

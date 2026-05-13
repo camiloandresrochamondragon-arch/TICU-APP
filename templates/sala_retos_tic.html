@@ -1,34 +1,366 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Sala de Retos TIC</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sala de Retos — TIC Platform</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body class="fondo-amarillo">
+<body>
 
-  <header class="fondo-rosado">
-    <h1>🎮 Sala de Retos TIC</h1>
-    <p class="intro">Participa en desafíos, juegos y actividades para pasar modalidades y divertirte aprendiendo.</p>
-  </header>
+<!-- ── TOPBAR ── -->
+<nav class="topbar">
+  <a href="/" class="topbar-logo">
+    <span>🚀</span> TIC Platform
+    <span class="logo-badge">BETA</span>
+  </a>
+  <div class="topbar-nav">
+    <a href="/">Inicio</a>
+    <a href="/herramientas">Herramientas</a>
+    {% if current_user.is_authenticated %}
+      <div class="user-chip">
+        <div class="avatar">{{ current_user.username[0].upper() }}</div>
+        {{ current_user.username }}
+      </div>
+      <a href="/dashboard" class="btn-primary">Mi panel</a>
+      <a href="/logout">Salir</a>
+    {% else %}
+      <a href="/login">Ingresar</a>
+      <a href="/registro" class="btn-primary">Registrarse</a>
+    {% endif %}
+  </div>
+</nav>
 
-  <main>
-    <section class="mundos-grid">
-      <a href="/mundos/programacion" class="mundo-texto">🧠 Programación<br><span>¡Crea tus propios juegos!</span></a>
-      <a href="/mundos/multimedia" class="mundo-texto">🎨 Multimedia<br><span>Historias con sonidos e imágenes.</span></a>
-      <a href="/mundos/internet-seguro" class="mundo-texto">🛡️ Internet Seguro<br><span>Navega con respeto.</span></a>
-      <a href="/mundos/robotica" class="mundo-texto">🤖 Robótica<br><span>¿Cómo piensan los robots?</span></a>
-      <a href="/mundos/inteligencia-artificial" class="mundo-texto">🧠 Inteligencia Artificial<br><span>¡Descúbrela jugando!</span></a>
-      <a href="/mundos/videojuegos" class="mundo-texto">🎮 Videojuegos<br><span>Diseña tu propio juego.</span></a>
-      <a href="/mundos/redes-sociales" class="mundo-texto">📱 Redes Sociales<br><span>Comunícate con seguridad.</span></a>
-      <a href="/mundos/ciberseguridad" class="mundo-texto">🔐 Ciberseguridad<br><span>Protege tus datos.</span></a>
-      <a href="/mundos/realidad-virtual" class="mundo-texto">🕶️ Realidad Virtual<br><span>Explora mundos 360°.</span></a>
-      <a href="/mundos/creacion-contenido" class="mundo-texto">📸 Creación de Contenido<br><span>¡Sé un influencer educativo!</span></a>
-    </section>
-  </main>
+<!-- ── CONTENIDO ── -->
+<div class="retos-page">
 
-  <footer class="fondo-menta">
-    <p>&copy; 2025 Sala de Retos TIC - Mundo TIC Infantil</p>
-  </footer>
+  <h1>🎮 Sala de Retos TIC</h1>
+  <span class="sub">
+    Avanza módulo a módulo — completa el quiz de cada área para desbloquear la siguiente.
+    Necesitas <strong>7 de 10</strong> respuestas correctas para pasar.
+  </span>
+
+  <!-- SI NO ESTÁ LOGUEADO -->
+  {% if not current_user.is_authenticated %}
+  <div style="background:rgba(79,142,247,.08); border:1px solid rgba(79,142,247,.25); border-radius:14px; padding:20px 24px; margin-bottom:36px; display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+    <span style="font-size:1.5rem;">🔐</span>
+    <div style="flex:1;">
+      <strong style="display:block; margin-bottom:4px;">Inicia sesión para guardar tu progreso</strong>
+      <span style="color:var(--muted); font-size:.875rem;">Puedes explorar los módulos, pero tu avance e insignias se guardan solo si tienes cuenta.</span>
+    </div>
+    <a href="/login" class="btn btn-solid">Iniciar sesión</a>
+    <a href="/registro" class="btn btn-ghost">Crear cuenta</a>
+  </div>
+  {% endif %}
+
+  <div class="retos-grid">
+
+    <!-- NIVEL 1 — PROGRAMACIÓN -->
+    {% if current_user.is_authenticated %}
+      {% set e1 = estado[0] if estado|length > 0 else none %}
+      <a href="/mundos/programacion"
+         class="reto-card {% if e1 and not e1.puede_acceder %}locked{% endif %}"
+         style="--card-color:#4f8ef7;">
+        <div class="reto-icon">💻</div>
+        <h3>Programación</h3>
+        <p>Lógica, algoritmos y desarrollo de soluciones digitales. Con juego de laberinto incluido.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 1</span>
+          <span class="reto-score">
+            {% if e1 and e1.completado %}✓ Completado · {{ e1.mejor_puntaje }}/10
+            {% elif e1 and e1.puede_acceder %}→ Disponible
+            {% else %}🔒 Bloqueado{% endif %}
+          </span>
+        </div>
+      </a>
+    {% else %}
+      <a href="/mundos/programacion" class="reto-card" style="--card-color:#4f8ef7;">
+        <div class="reto-icon">💻</div>
+        <h3>Programación</h3>
+        <p>Lógica, algoritmos y desarrollo de soluciones digitales. Con juego de laberinto incluido.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 1</span>
+          <span class="reto-score">Disponible</span>
+        </div>
+      </a>
+    {% endif %}
+
+    <!-- NIVEL 2 — MULTIMEDIA -->
+    {% if current_user.is_authenticated %}
+      {% set e2 = estado[1] if estado|length > 1 else none %}
+      <a href="{% if e2 and e2.puede_acceder %}/mundos/multimedia{% else %}#{% endif %}"
+         class="reto-card {% if not e2 or not e2.puede_acceder %}locked{% endif %}"
+         style="--card-color:#a855f7;">
+        <div class="reto-icon">🎨</div>
+        <h3>Multimedia</h3>
+        <p>Diseño, edición de contenido y creación de piezas visuales para comunicación digital.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 2</span>
+          <span class="reto-score">
+            {% if e2 and e2.completado %}✓ Completado · {{ e2.mejor_puntaje }}/10
+            {% elif e2 and e2.puede_acceder %}→ Disponible
+            {% else %}🔒 Completa Nivel 1{% endif %}
+          </span>
+        </div>
+      </a>
+    {% else %}
+      <div class="reto-card locked" style="--card-color:#a855f7;">
+        <div class="reto-icon">🎨</div>
+        <h3>Multimedia</h3>
+        <p>Diseño, edición de contenido y creación de piezas visuales para comunicación digital.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 2</span>
+          <span class="reto-score">🔒 Inicia sesión</span>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- NIVEL 3 — INTERNET SEGURO -->
+    {% if current_user.is_authenticated %}
+      {% set e3 = estado[2] if estado|length > 2 else none %}
+      <a href="{% if e3 and e3.puede_acceder %}/mundos/internet-seguro{% else %}#{% endif %}"
+         class="reto-card {% if not e3 or not e3.puede_acceder %}locked{% endif %}"
+         style="--card-color:#22c55e;">
+        <div class="reto-icon">🛡️</div>
+        <h3>Internet Seguro</h3>
+        <p>Navegar seguro, proteger tu información y evitar peligros en línea.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 3</span>
+          <span class="reto-score">
+            {% if e3 and e3.completado %}✓ Completado · {{ e3.mejor_puntaje }}/10
+            {% elif e3 and e3.puede_acceder %}→ Disponible
+            {% else %}🔒 Completa Nivel 2{% endif %}
+          </span>
+        </div>
+      </a>
+    {% else %}
+      <div class="reto-card locked" style="--card-color:#22c55e;">
+        <div class="reto-icon">🛡️</div>
+        <h3>Internet Seguro</h3>
+        <p>Navegar seguro, proteger tu información y evitar peligros en línea.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 3</span>
+          <span class="reto-score">🔒 Inicia sesión</span>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- NIVEL 4 — CIBERSEGURIDAD -->
+    {% if current_user.is_authenticated %}
+      {% set e4 = estado[3] if estado|length > 3 else none %}
+      <a href="{% if e4 and e4.puede_acceder %}/mundos/ciberseguridad{% else %}#{% endif %}"
+         class="reto-card {% if not e4 or not e4.puede_acceder %}locked{% endif %}"
+         style="--card-color:#ef4444;">
+        <div class="reto-icon">🔐</div>
+        <h3>Ciberseguridad</h3>
+        <p>Amenazas digitales, hacking ético y defensa de sistemas informáticos.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 4</span>
+          <span class="reto-score">
+            {% if e4 and e4.completado %}✓ Completado · {{ e4.mejor_puntaje }}/10
+            {% elif e4 and e4.puede_acceder %}→ Disponible
+            {% else %}🔒 Completa Nivel 3{% endif %}
+          </span>
+        </div>
+      </a>
+    {% else %}
+      <div class="reto-card locked" style="--card-color:#ef4444;">
+        <div class="reto-icon">🔐</div>
+        <h3>Ciberseguridad</h3>
+        <p>Amenazas digitales, hacking ético y defensa de sistemas informáticos.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 4</span>
+          <span class="reto-score">🔒 Inicia sesión</span>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- NIVEL 5 — ROBÓTICA -->
+    {% if current_user.is_authenticated %}
+      {% set e5 = estado[4] if estado|length > 4 else none %}
+      <a href="{% if e5 and e5.puede_acceder %}/mundos/robotica{% else %}#{% endif %}"
+         class="reto-card {% if not e5 or not e5.puede_acceder %}locked{% endif %}"
+         style="--card-color:#f97316;">
+        <div class="reto-icon">🤖</div>
+        <h3>Robótica</h3>
+        <p>Máquinas programables, sensores y automatización de procesos industriales.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 5</span>
+          <span class="reto-score">
+            {% if e5 and e5.completado %}✓ Completado · {{ e5.mejor_puntaje }}/10
+            {% elif e5 and e5.puede_acceder %}→ Disponible
+            {% else %}🔒 Completa Nivel 4{% endif %}
+          </span>
+        </div>
+      </a>
+    {% else %}
+      <div class="reto-card locked" style="--card-color:#f97316;">
+        <div class="reto-icon">🤖</div>
+        <h3>Robótica</h3>
+        <p>Máquinas programables, sensores y automatización de procesos industriales.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 5</span>
+          <span class="reto-score">🔒 Inicia sesión</span>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- NIVEL 6 — IA -->
+    {% if current_user.is_authenticated %}
+      {% set e6 = estado[5] if estado|length > 5 else none %}
+      <a href="{% if e6 and e6.puede_acceder %}/mundos/inteligencia-artificial{% else %}#{% endif %}"
+         class="reto-card {% if not e6 or not e6.puede_acceder %}locked{% endif %}"
+         style="--card-color:#8b5cf6;">
+        <div class="reto-icon">🧠</div>
+        <h3>Inteligencia Artificial</h3>
+        <p>IA, algoritmos de aprendizaje automático y ética en tecnología.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 6</span>
+          <span class="reto-score">
+            {% if e6 and e6.completado %}✓ Completado · {{ e6.mejor_puntaje }}/10
+            {% elif e6 and e6.puede_acceder %}→ Disponible
+            {% else %}🔒 Completa Nivel 5{% endif %}
+          </span>
+        </div>
+      </a>
+    {% else %}
+      <div class="reto-card locked" style="--card-color:#8b5cf6;">
+        <div class="reto-icon">🧠</div>
+        <h3>Inteligencia Artificial</h3>
+        <p>IA, algoritmos de aprendizaje automático y ética en tecnología.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 6</span>
+          <span class="reto-score">🔒 Inicia sesión</span>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- NIVEL 7 — VIDEOJUEGOS -->
+    {% if current_user.is_authenticated %}
+      {% set e7 = estado[6] if estado|length > 6 else none %}
+      <a href="{% if e7 and e7.puede_acceder %}/mundos/videojuegos{% else %}#{% endif %}"
+         class="reto-card {% if not e7 or not e7.puede_acceder %}locked{% endif %}"
+         style="--card-color:#ec4899;">
+        <div class="reto-icon">🎮</div>
+        <h3>Videojuegos</h3>
+        <p>Diseño, mecánicas y creación de videojuegos educativos e interactivos.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 7</span>
+          <span class="reto-score">
+            {% if e7 and e7.completado %}✓ Completado · {{ e7.mejor_puntaje }}/10
+            {% elif e7 and e7.puede_acceder %}→ Disponible
+            {% else %}🔒 Completa Nivel 6{% endif %}
+          </span>
+        </div>
+      </a>
+    {% else %}
+      <div class="reto-card locked" style="--card-color:#ec4899;">
+        <div class="reto-icon">🎮</div>
+        <h3>Videojuegos</h3>
+        <p>Diseño, mecánicas y creación de videojuegos educativos e interactivos.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 7</span>
+          <span class="reto-score">🔒 Inicia sesión</span>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- NIVEL 8 — REDES SOCIALES -->
+    {% if current_user.is_authenticated %}
+      {% set e8 = estado[7] if estado|length > 7 else none %}
+      <a href="{% if e8 and e8.puede_acceder %}/mundos/redes-sociales{% else %}#{% endif %}"
+         class="reto-card {% if not e8 or not e8.puede_acceder %}locked{% endif %}"
+         style="--card-color:#06b6d4;">
+        <div class="reto-icon">📱</div>
+        <h3>Redes Sociales</h3>
+        <p>Comunicación digital responsable, privacidad y ciudadanía en línea.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 8</span>
+          <span class="reto-score">
+            {% if e8 and e8.completado %}✓ Completado · {{ e8.mejor_puntaje }}/10
+            {% elif e8 and e8.puede_acceder %}→ Disponible
+            {% else %}🔒 Completa Nivel 7{% endif %}
+          </span>
+        </div>
+      </a>
+    {% else %}
+      <div class="reto-card locked" style="--card-color:#06b6d4;">
+        <div class="reto-icon">📱</div>
+        <h3>Redes Sociales</h3>
+        <p>Comunicación digital responsable, privacidad y ciudadanía en línea.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 8</span>
+          <span class="reto-score">🔒 Inicia sesión</span>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- NIVEL 9 — REALIDAD VIRTUAL -->
+    {% if current_user.is_authenticated %}
+      {% set e9 = estado[8] if estado|length > 8 else none %}
+      <a href="{% if e9 and e9.puede_acceder %}/mundos/realidad-virtual{% else %}#{% endif %}"
+         class="reto-card {% if not e9 or not e9.puede_acceder %}locked{% endif %}"
+         style="--card-color:#14b8a6;">
+        <div class="reto-icon">🕶️</div>
+        <h3>Realidad Virtual</h3>
+        <p>Simulaciones inmersivas, VR educativa y entornos 360° interactivos.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 9</span>
+          <span class="reto-score">
+            {% if e9 and e9.completado %}✓ Completado · {{ e9.mejor_puntaje }}/10
+            {% elif e9 and e9.puede_acceder %}→ Disponible
+            {% else %}🔒 Completa Nivel 8{% endif %}
+          </span>
+        </div>
+      </a>
+    {% else %}
+      <div class="reto-card locked" style="--card-color:#14b8a6;">
+        <div class="reto-icon">🕶️</div>
+        <h3>Realidad Virtual</h3>
+        <p>Simulaciones inmersivas, VR educativa y entornos 360° interactivos.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 9</span>
+          <span class="reto-score">🔒 Inicia sesión</span>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- NIVEL 10 — CREACIÓN DE CONTENIDO -->
+    {% if current_user.is_authenticated %}
+      {% set e10 = estado[9] if estado|length > 9 else none %}
+      <a href="{% if e10 and e10.puede_acceder %}/mundos/creacion-contenido{% else %}#{% endif %}"
+         class="reto-card {% if not e10 or not e10.puede_acceder %}locked{% endif %}"
+         style="--card-color:#f59e0b;">
+        <div class="reto-icon">📸</div>
+        <h3>Creación de Contenido</h3>
+        <p>Podcasts, videos, diseño y publicaciones digitales para el mundo real.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 10</span>
+          <span class="reto-score">
+            {% if e10 and e10.completado %}✓ Completado · {{ e10.mejor_puntaje }}/10
+            {% elif e10 and e10.puede_acceder %}→ Disponible
+            {% else %}🔒 Completa Nivel 9{% endif %}
+          </span>
+        </div>
+      </a>
+    {% else %}
+      <div class="reto-card locked" style="--card-color:#f59e0b;">
+        <div class="reto-icon">📸</div>
+        <h3>Creación de Contenido</h3>
+        <p>Podcasts, videos, diseño y publicaciones digitales para el mundo real.</p>
+        <div class="reto-footer">
+          <span class="reto-nivel">Nivel 10</span>
+          <span class="reto-score">🔒 Inicia sesión</span>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 TIC Platform — Formación Digital Profesional</p>
+</footer>
+
 </body>
 </html>

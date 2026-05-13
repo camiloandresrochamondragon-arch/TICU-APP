@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión — TIC Platform</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="auth-page">
+
+  <!-- LADO IZQUIERDO — INFO -->
+  <div class="auth-side">
+    <div class="auth-side-logo">🚀 TIC Platform</div>
+
+    <h2>Aprende tecnología<br>a tu propio ritmo</h2>
+    <p>
+      Una plataforma de formación en TIC diseñada para colegios
+      y empresas. Progresión guiada, retos prácticos y seguimiento en tiempo real.
+    </p>
+
+    <ul class="auth-features">
+      <li>
+        <span class="check">✓</span>
+        Módulos progresivos con certificación
+      </li>
+      <li>
+        <span class="check">✓</span>
+        Progreso guardado automáticamente
+      </li>
+      <li>
+        <span class="check">✓</span>
+        Sala de retos interactiva
+      </li>
+      <li>
+        <span class="check">✓</span>
+        Acceso desde cualquier dispositivo
+      </li>
+    </ul>
+  </div>
+
+  <!-- LADO DERECHO — FORM -->
+  <div class="auth-form-wrap">
+    <div class="auth-form-box">
+      <h1>Bienvenido de nuevo</h1>
+      <p class="auth-subtitle">Ingresa tus datos para continuar</p>
+
+      <form method="POST">
+        <div class="form-group">
+          <label for="username">Usuario</label>
+          <input type="text" name="username" id="username"
+                 placeholder="tu_usuario" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input type="password" name="password" id="password"
+                 placeholder="••••••••" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="btn-submit">Iniciar sesión →</button>
+      </form>
+
+      <div class="auth-switch">
+        ¿No tienes cuenta?
+        <a href="/registro">Crear cuenta gratis</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

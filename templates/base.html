@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}TIC Platform{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='ticu-mascota.css') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<nav class="topbar">
+  <a href="/" class="topbar-logo">
+    <span>🚀</span> TIC Platform
+    <span class="logo-badge">BETA</span>
+  </a>
+  <div class="topbar-nav">
+    <a href="/retos">Módulos</a>
+    <a href="/herramientas">Herramientas</a>
+    {% if current_user.is_authenticated %}
+      <div class="user-chip">
+        <div class="avatar">{{ current_user.username[0].upper() }}</div>
+        {{ current_user.username }}
+      </div>
+      <a href="/dashboard" class="btn-primary">Mi panel</a>
+      <a href="/logout">Salir</a>
+    {% else %}
+      <a href="/login">Ingresar</a>
+      <a href="/registro" class="btn-primary">Registrarse</a>
+    {% endif %}
+  </div>
+</nav>
+
+{% block content %}{% endblock %}
+
+<footer>
+  <p>© 2025 TIC Platform — Formación Digital Profesional</p>
+</footer>
+
+<script src="{{ url_for('static', filename='ticu-mascota.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
